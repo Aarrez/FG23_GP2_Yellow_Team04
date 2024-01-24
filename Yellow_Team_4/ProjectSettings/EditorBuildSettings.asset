@@ -4,6 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/NickeTest/NickeTestScene.unity
+    guid: 553c82eaf54745b4eae850fba4e19670
   m_configObjects:
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 7419f83690ebf3f428727d7fe89aa678, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: 821f37a90540a0d42b5dbd58affbf397, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 7eae7593ea84954458b26215d2776a52, type: 2}

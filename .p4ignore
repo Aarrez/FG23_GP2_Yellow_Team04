@@ -43,3 +43,21 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
+
+# Never ignore DLLs in the FMOD subfolder.
+!/Yellow_Team_4/Assets/Plugins/FMOD/**/lib/*
+
+# Don't ignore images and gizmos used by FMOD in the Unity Editor.
+!/Yellow_Team_4/Assets/Gizmos/FMOD/*
+!/Yellow_Team_4/Assets/Editor Default Resources/FMOD/*
+
+# Ignore the Cache folder since it is updated locally.
+/Yellow_Team_4/Assets/Plugins/FMOD/Cache/*
+
+# Ignore bank files in the StreamingAssets folder.
+/Yellow_Team_4/Assets/StreamingAssets/**/*.bank
+/Yellow_Team_4/Assets/StreamingAssets/**/*.bank.meta
+
+# If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
+# Log files can be ignored.
+fmod_editor.log
