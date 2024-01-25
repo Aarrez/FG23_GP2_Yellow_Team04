@@ -28,8 +28,8 @@ public class SpawnInObjects : MonoBehaviour
     {
         System.Random rand = new System.Random();
         minScaleX = -maxScaleX;
-        minScaleY = -minScaleY;
-        //Doos not really work Goes into wall when spawning
+        minScaleY = -maxScaleY;
+        
         float tempMaxY = ChangeScale(Vector3.forward, ref maxScaleY);
         float tempMinY = ChangeScale(Vector3.back, ref minScaleY);
         float tempMaxX = ChangeScale(Vector3.right, ref maxScaleX);
@@ -54,7 +54,12 @@ public class SpawnInObjects : MonoBehaviour
         if (Physics.Raycast(transform.position, direction, out RaycastHit hit, scale, LayerMask.GetMask("Default"))) 
         {
             float a = Vector3.Distance(transform.position, hit.transform.position);
+            
+            if (scale < 0)
+                return -a;
+            
             return a;
+
         }
         return scale;
     }
