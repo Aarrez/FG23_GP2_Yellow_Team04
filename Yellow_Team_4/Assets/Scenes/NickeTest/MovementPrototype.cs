@@ -9,11 +9,14 @@ public class MovementPrototype : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject player;
-    [SerializeField] private float force = 5;
+    [SerializeField] private float force = 10;
+    [SerializeField] private float idleForce = 5;
+    private LayerMask groundMask;
     void Start()
     {
         Application.targetFrameRate = 120;
         StartCoroutine(DelayedFPSOptim());
+        groundMask = LayerMask.GetMask("Ground");
     }
 
     // Update is called once per frame
