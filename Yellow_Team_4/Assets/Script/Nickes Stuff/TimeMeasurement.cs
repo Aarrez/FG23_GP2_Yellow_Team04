@@ -8,25 +8,32 @@ public class TimeMeasurement : MonoBehaviour
     private float currentMeasuredTime;
     public float finalMeasuredTime;
     private float startTime;
+    private bool hasStarted;
 
     private void Awake()
     {
         GameManager.onGameStateChanged += GameManagerOnonGameSateChanged;
     }
-
     private void GameManagerOnonGameSateChanged(GameManager.gameState state)
     {
-       
-    }
+        if (state == GameManager.gameState.racingState)
+        {
+            hasStarted = true;
+            startTime = Time.timeSinceLevelLoad;
+        }
 
-    void Start()
-    {
-        
+        if (state == GameManager.gameState.finishState)
+        {
+            finalMeasuredTime = currentMeasuredTime;
+            Debug.Log(finalMeasuredTime);
+        }
     }
-
     // Update is called once per frame
     void Update()
     {
-        currentMeasuredTime = Time.timeSinceLevelLoad - startTime;
+        if (hasStarted)
+        {
+            currentMeasuredTime = Time.timeSinceLevelLoad - startTime;
+        }
     }
 }

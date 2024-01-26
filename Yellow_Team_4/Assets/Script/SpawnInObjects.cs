@@ -3,32 +3,45 @@ using Random = UnityEngine.Random;
 
 public class SpawnInObjects : MonoBehaviour
 {
-    [SerializeField] private GameObject[] ObjectsToSpawn;
+    [SerializeField] private GameObject[] objectsToSpawn;
 
     [SerializeField] private int amount = 1;
     
     [SerializeField] private float maxScaleX = 1f;
-    private float minScaleX;
+    private float minScaleX = -1;
     [SerializeField] private float maxScaleY = 1f;
-    private float minScaleY;
+    private float minScaleY = -1;
+    
+    [Header("Ray variables")]
+    [Tooltip("The Distance from walls the props will spawn")]
+    [SerializeField] private float paddingWall = 1f;
+
+    [SerializeField] private LayerMask rayBlockerMask = 1;
+
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(maxScaleX * 2, 1, maxScaleY * 2));
     }
-
-    private void Update()
+#endif
+    
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            InstatiateObjects();
-        }
+        minScaleX = -maxScaleX;
+        minScaleY = -maxScaleY;
     }
+
+    // private void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.E))
+    //     {
+    //         InstatiateObjects();
+    //     }
+    // }
     
     public void InstatiateObjects()
     {
         System.Random rand = new System.Random();
-        minScaleX = -maxScaleX;
-        minScaleY = -maxScaleY;
         
         float tempMaxY = ChangeScale(Vector3.forward, ref maxScaleY);
         float tempMinY = ChangeScale(Vector3.back, ref minScaleY);
@@ -37,28 +50,28 @@ public class SpawnInObjects : MonoBehaviour
         
         for (int i = 0; i < amount - 1; i++)
         {
-            int randInt = rand.Next(0, ObjectsToSpawn.Length-1);
-            GameObject tempObj = ObjectsToSpawn[randInt];
-            Instantiate(tempObj);
-            tempObj.name = $"Prop{i}";
             float randPositionx = Random.Range(tempMinX, tempMaxX);
             float randPositionz = Random.Range(tempMinY, tempMaxY);
            
             Vector3 tempVector = new Vector3(randPositionx, transform.position.y, randPositionz);
-            tempObj.transform.position = tempVector;
+            int randInt = rand.Next(0, objectsToSpawn.Length-1);
+            GameObject tempObj = objectsToSpawn[randInt].gameObject;
+            // Can add a random or specific rotaion
+            Instantiate(tempObj, tempVector, transform.rotation, transform);
         }
     }
 
     private float ChangeScale(Vector3 direction, ref float scale)
     {
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, scale, LayerMask.GetMask("Default"))) 
+        float tempf = scale < 0 ? -scale : scale;
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, tempf, rayBlockerMask)) 
         {
             float a = Vector3.Distance(transform.position, hit.transform.position);
-            
+
             if (scale < 0)
-                return -a;
+                return -a + paddingWall;
             
-            return a;
+            return a - paddingWall;
 
         }
         return scale;

@@ -44,8 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84eadeff970c041408094b2485510c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectsToSpawn:
+  objectsToSpawn:
   - {fileID: 8134062123765867116, guid: 39f462220cef56d47b8fc9470081663e, type: 3}
   amount: 5
-  maxX: 10
-  maxY: 10
+  maxScaleX: 10
+  maxScaleY: 10
+  paddingWall: 2
+  rayBlockerMask:
+    serializedVersion: 2
+    m_Bits: 1

@@ -8,12 +8,10 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public gameState state;
     public static event Action<gameState> onGameStateChanged; 
-
     private void Awake()
     {
         instance = this;
     }
-
     private void Start()
     {
         UpdateGameState(gameState.readyState);
@@ -26,10 +24,13 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case gameState.readyState:
+                Time.timeScale = 0;
                 break;
             case gameState.racingState:
+                Time.timeScale = 1;
                 break;
             case gameState.pauseState:
+                Time.timeScale = 0;
                 break;
             case gameState.finishState:
                 break;
