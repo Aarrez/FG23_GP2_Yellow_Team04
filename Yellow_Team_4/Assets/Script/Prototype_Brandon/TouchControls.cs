@@ -210,6 +210,24 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftHookFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""a5073351-eb87-47e6-a043-d4571740bc28"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightHookFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""987bbdf8-d114-45c4-8e5c-2b7084cd7a7a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -256,6 +274,28 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
                     ""action"": ""RightPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2df719fd-8bcb-4e67-a885-684e98656922"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftHookFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ffef2c1a-e6c3-4bbe-b655-4abf2998ef8e"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightHookFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -277,6 +317,8 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
         m_Keyboard_TouchPress = m_Keyboard.FindAction("TouchPress", throwIfNotFound: true);
         m_Keyboard_LeftPress = m_Keyboard.FindAction("LeftPress", throwIfNotFound: true);
         m_Keyboard_RightPress = m_Keyboard.FindAction("RightPress", throwIfNotFound: true);
+        m_Keyboard_LeftHookFire = m_Keyboard.FindAction("LeftHookFire", throwIfNotFound: true);
+        m_Keyboard_RightHookFire = m_Keyboard.FindAction("RightHookFire", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -436,6 +478,8 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Keyboard_TouchPress;
     private readonly InputAction m_Keyboard_LeftPress;
     private readonly InputAction m_Keyboard_RightPress;
+    private readonly InputAction m_Keyboard_LeftHookFire;
+    private readonly InputAction m_Keyboard_RightHookFire;
     public struct KeyboardActions
     {
         private @TouchControls m_Wrapper;
@@ -444,6 +488,8 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
         public InputAction @TouchPress => m_Wrapper.m_Keyboard_TouchPress;
         public InputAction @LeftPress => m_Wrapper.m_Keyboard_LeftPress;
         public InputAction @RightPress => m_Wrapper.m_Keyboard_RightPress;
+        public InputAction @LeftHookFire => m_Wrapper.m_Keyboard_LeftHookFire;
+        public InputAction @RightHookFire => m_Wrapper.m_Keyboard_RightHookFire;
         public InputActionMap Get() { return m_Wrapper.m_Keyboard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -465,6 +511,12 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
             @RightPress.started += instance.OnRightPress;
             @RightPress.performed += instance.OnRightPress;
             @RightPress.canceled += instance.OnRightPress;
+            @LeftHookFire.started += instance.OnLeftHookFire;
+            @LeftHookFire.performed += instance.OnLeftHookFire;
+            @LeftHookFire.canceled += instance.OnLeftHookFire;
+            @RightHookFire.started += instance.OnRightHookFire;
+            @RightHookFire.performed += instance.OnRightHookFire;
+            @RightHookFire.canceled += instance.OnRightHookFire;
         }
 
         private void UnregisterCallbacks(IKeyboardActions instance)
@@ -481,6 +533,12 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
             @RightPress.started -= instance.OnRightPress;
             @RightPress.performed -= instance.OnRightPress;
             @RightPress.canceled -= instance.OnRightPress;
+            @LeftHookFire.started -= instance.OnLeftHookFire;
+            @LeftHookFire.performed -= instance.OnLeftHookFire;
+            @LeftHookFire.canceled -= instance.OnLeftHookFire;
+            @RightHookFire.started -= instance.OnRightHookFire;
+            @RightHookFire.performed -= instance.OnRightHookFire;
+            @RightHookFire.canceled -= instance.OnRightHookFire;
         }
 
         public void RemoveCallbacks(IKeyboardActions instance)
@@ -514,5 +572,7 @@ public partial class @TouchControls: IInputActionCollection2, IDisposable
         void OnTouchPress(InputAction.CallbackContext context);
         void OnLeftPress(InputAction.CallbackContext context);
         void OnRightPress(InputAction.CallbackContext context);
+        void OnLeftHookFire(InputAction.CallbackContext context);
+        void OnRightHookFire(InputAction.CallbackContext context);
     }
 }

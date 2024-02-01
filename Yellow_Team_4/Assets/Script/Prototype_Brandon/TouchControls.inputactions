@@ -188,6 +188,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "LeftHookFire",
+                    "type": "Button",
+                    "id": "a5073351-eb87-47e6-a043-d4571740bc28",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightHookFire",
+                    "type": "Button",
+                    "id": "987bbdf8-d114-45c4-8e5c-2b7084cd7a7a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -232,6 +250,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RightPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2df719fd-8bcb-4e67-a885-684e98656922",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftHookFire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ffef2c1a-e6c3-4bbe-b655-4abf2998ef8e",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightHookFire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

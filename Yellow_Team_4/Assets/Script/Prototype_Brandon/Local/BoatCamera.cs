@@ -57,6 +57,14 @@ public class BoatCamera : MonoBehaviour, IOnStartTouch
         targetForwardRotationAngle = Mathf.Clamp(targetForwardRotationAngle + 1, -5, 5);
     }    
     
+    void IOnStartTouch.InvokeLeftSwipeTouch(UnityEngine.Vector2 screenSpacePosition) {
+
+    }
+
+    void IOnStartTouch.InvokeRightSwipeTouch(UnityEngine.Vector2 screenSpacePosition) {
+
+    }
+
     #if UNITY_EDITOR
     void OnDrawGizmos() {
         Gizmos.color = Color.magenta;

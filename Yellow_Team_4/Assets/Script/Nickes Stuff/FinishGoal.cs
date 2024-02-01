@@ -7,6 +7,7 @@ public class FinishGoal : MonoBehaviour
 {
     public float[] starTimes = new float[3];
     public int starsEarned;
+    [SerializeField] private Stars starScript;
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")

@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1413424363828810240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2122229337529053131}
+  - component: {fileID: 6583757861425925021}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2122229337529053131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413424363828810240}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.2992477, y: 6.3782816, z: -2.1164134}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6583757861425925021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413424363828810240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cf985e636df07444b3890faa32d1f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: 
+    clip: {fileID: 0}
+    volume: 0
+    pitch: 0
+    source: {fileID: 0}
+  - name: 
+    clip: {fileID: 0}
+    volume: 0
+    pitch: 0
+    source: {fileID: 0}
+  sfx:
+  - name: Blood
+    clip: {fileID: 8300000, guid: cbbdeb95fd2f9fe49b5ac74d1bf94af7, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  music:
+  - name: Music
+    clip: {fileID: 8300000, guid: fd71aabdb9605754aa40bd1c6b8219fa, type: 3}
+    volume: 1
+    pitch: 1
+    source: {fileID: 0}
+  masterMixer: {fileID: 24100000, guid: db7653708c0d85b40bc8f9afaaa8b8fd, type: 2}
+  sfxMixer: {fileID: 1136295760882028572, guid: db7653708c0d85b40bc8f9afaaa8b8fd, type: 2}
+  musicMixer: {fileID: -5773604457108270745, guid: db7653708c0d85b40bc8f9afaaa8b8fd, type: 2}

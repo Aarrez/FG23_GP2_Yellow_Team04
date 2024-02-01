@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class TimeMeasurement : MonoBehaviour
 {
-    private float currentMeasuredTime;
     public float finalMeasuredTime;
-    private float startTime;
     private bool hasStarted;
 
     private void Awake()
@@ -19,13 +17,15 @@ public class TimeMeasurement : MonoBehaviour
         if (state == GameManager.gameState.racingState)
         {
             hasStarted = true;
-            startTime = Time.timeSinceLevelLoad;
         }
-
         if (state == GameManager.gameState.finishState)
         {
-            finalMeasuredTime = currentMeasuredTime;
+            hasStarted = false;
             Debug.Log(finalMeasuredTime);
+        }
+        if (state == GameManager.gameState.mainmenuState)
+        {
+            hasStarted = false;
         }
     }
     // Update is called once per frame
@@ -33,7 +33,7 @@ public class TimeMeasurement : MonoBehaviour
     {
         if (hasStarted)
         {
-            currentMeasuredTime = Time.timeSinceLevelLoad - startTime;
+            finalMeasuredTime = Time.timeSinceLevelLoad;
         }
     }
 }

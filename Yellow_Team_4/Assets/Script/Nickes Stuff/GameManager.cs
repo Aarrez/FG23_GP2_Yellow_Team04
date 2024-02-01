@@ -10,19 +10,34 @@ public class GameManager : MonoBehaviour
     public static event Action<gameState> onGameStateChanged; 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
     }
+    
     private void Start()
     {
-        UpdateGameState(gameState.readyState);
+        UpdateGameState(gameState.mainmenuState);
+        StartCoroutine(delayedFpsOptim());
     }
-
     public void UpdateGameState(gameState newState)
     {
         state = newState;
 
         switch (newState)
         {
+            case gameState.mainmenuState:
+                break;
+            case gameState.settingsState:
+                break;
+            case gameState.levelSelectionState:
+                break;
             case gameState.readyState:
                 Time.timeScale = 0;
                 break;
@@ -32,19 +47,30 @@ public class GameManager : MonoBehaviour
             case gameState.pauseState:
                 Time.timeScale = 0;
                 break;
+            case gameState.pauseSettingState:
+                break;
             case gameState.finishState:
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
-
-        onGameStateChanged?.Invoke(newState);
+        onGameStateChanged.Invoke(newState);
     }
     public enum gameState
     {
+        mainmenuState,
+        settingsState,
+        levelSelectionState,
         readyState,
         racingState,
         pauseState,
+        pauseSettingState,
         finishState,
+    }
+
+    IEnumerator delayedFpsOptim()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
     }
 }

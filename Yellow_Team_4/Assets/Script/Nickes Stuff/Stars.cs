@@ -8,13 +8,49 @@ using UnityEngine.UI;
 public class Stars : MonoBehaviour
 {
     public Image[] stars;
-    [SerializeField] Sprite fullStar;
+    [SerializeField] private Sprite fullStar;
+    [SerializeField] private Sprite emptyStar;
     [SerializeField] private FinishGoal goalScript;
+    public bool goalScriptInScene;
+
+    private void Awake()
+    {
+        GameManager.onGameStateChanged += GameManagerOnonGameStateChanged;
+    }
+
+    private void GameManagerOnonGameStateChanged(GameManager.gameState state)
+    {
+        if (state == GameManager.gameState.racingState)
+        {
+            goalScript = GameObject.FindObjectOfType<FinishGoal>();
+            if (goalScript == null)
+            {
+                goalScriptInScene = false;
+            }
+            else
+            {
+                goalScriptInScene = true;
+            }
+            
+            for (int i = 0; i < 3; i++)
+            {
+                stars[i].sprite = emptyStar;
+            }
+        }
+    }
     private void Update()
     {
-        for (int i = 0; i < goalScript.starsEarned; i++)
+        if (goalScriptInScene)
         {
-            stars[i].sprite = fullStar;
+            for (int i = 0; i < goalScript.starsEarned; i++)
+            {
+                stars[i].sprite = fullStar;
+            } 
         }
+    }
+
+    public void DelGoalScript()
+    {
+        goalScriptInScene = false;
     }
 }

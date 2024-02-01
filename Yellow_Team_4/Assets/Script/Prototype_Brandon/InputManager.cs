@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public interface IOnStartTouch {
     public void InvokeLeftSideTouch(Vector2 screenSpacePosition);
     public void InvokeRightSideTouch(Vector2 screenSpacePosition);
+    public void InvokeLeftSwipeTouch(Vector2 screenSpacePosition);
+    public void InvokeRightSwipeTouch(Vector2 screenSpacePosition);
 }   
 
 public interface IOnStickInput
@@ -25,6 +27,10 @@ public class InputManager : MonoBehaviour
     [SerializeField] private bool isInvertKeyboardControls = false;
 
     private TouchControls controls;
+    private ButtonControls buttonControls;
+    private Vector2 finalTouchPosition;
+    private Vector2 initialTouchPosition;
+
     private void Awake() {
         controls = new TouchControls();        
     }
@@ -36,11 +42,13 @@ public class InputManager : MonoBehaviour
         controls.Disable();
     }
 
-    private void Start () {        
+    private void Start () {    
         controls.Touch.TouchPress.started += ctx => StartTouch(ctx);
+        controls.Touch.TouchPress.performed += ctx => Touching(ctx);
         controls.Touch.TouchPress.canceled += ctx => EndTouch(ctx);
 
         controls.Touch.TouchPress002.started += ctx => StartTouch(ctx);
+        controls.Touch.TouchPress002.performed += ctx => Touching(ctx);
         controls.Touch.TouchPress002.canceled += ctx => EndTouch(ctx);        
 
         // controls.Keyboard.TouchPress.started += ctx => StartTouch(ctx);
@@ -53,33 +61,73 @@ public class InputManager : MonoBehaviour
         controls.Touch.RightStick.canceled += ctx => EndRightStick(ctx);
 
         controls.Keyboard.LeftPress.performed += ctx => PerformLeftButtonPress(ctx);
-        controls.Keyboard.RightPress.performed += ctx => PerformRightButtonPress(ctx);        
+        controls.Keyboard.RightPress.performed += ctx => PerformRightButtonPress(ctx);
+
+        controls.Keyboard.LeftHookFire.performed += ctx => PerformLeftSwipe(ctx);
+        controls.Keyboard.RightHookFire.performed += ctx => PerformRightSwipe(ctx);
+
+        buttonControls = FindObjectOfType<ButtonControls>(true);
+        if (buttonControls != null) {
+            buttonControls.LeftPlayerHook.onClick.AddListener( () => {
+                PerformLeftSwipe(new InputAction.CallbackContext());
+            });
+            buttonControls.LeftPlayerPaddle.onClick.AddListener( () => {
+                PerformLeftButtonPress(new InputAction.CallbackContext());
+            });
+
+            buttonControls.RightPlayerHook.onClick.AddListener( () => {
+                PerformRightSwipe(new InputAction.CallbackContext());
+            });
+            buttonControls.RightPlayerPaddle.onClick.AddListener( () => {
+                PerformRightButtonPress(new InputAction.CallbackContext());
+            });
+        }
     }
 
     private void StartTouch(InputAction.CallbackContext context) {
         if (useTapControls) {
-            var output = controls.Touch.TouchPosition.ReadValue<Vector2>();            
+            initialTouchPosition = controls.Touch.TouchPosition.ReadValue<Vector2>();                        
+        }
+    }
 
-            var onTouch = FindObjectsOfType<MonoBehaviour>().OfType<IOnStartTouch>();
-            if (output.x < Screen.width / 2)
-            {
-                foreach(var ot in onTouch) {
-                    ot.InvokeLeftSideTouch(output);
-                }
-            }
-            else
-            {
-                foreach(var ot in onTouch) {
-                    ot.InvokeRightSideTouch(output);
-                }
-            }
+    private void Touching(InputAction.CallbackContext context) {
+        if (useTapControls) {
+            finalTouchPosition = controls.Touch.TouchPosition.ReadValue<Vector2>();
         }
     }    
     
     private void EndTouch(InputAction.CallbackContext context) {
         // Debug.Log("Touch ended");
         if (useTapControls) {
-
+            var onTouch = FindObjectsOfType<MonoBehaviour>().OfType<IOnStartTouch>();
+            if ((finalTouchPosition - initialTouchPosition).magnitude < 2f) {
+                if (finalTouchPosition.x < Screen.width / 2)
+                {
+                    foreach(var ot in onTouch) {
+                        ot.InvokeLeftSideTouch(finalTouchPosition);
+                    }
+                }
+                else
+                {
+                    foreach(var ot in onTouch) {
+                        ot.InvokeRightSideTouch(finalTouchPosition);
+                    }
+                }
+            } else {
+                // enable swipe
+                if (finalTouchPosition.x < Screen.width / 2)
+                {
+                    foreach(var ot in onTouch) {
+                        ot.InvokeLeftSwipeTouch(finalTouchPosition);
+                    }
+                }
+                else
+                {
+                    foreach(var ot in onTouch) {
+                        ot.InvokeRightSwipeTouch(finalTouchPosition);
+                    }
+                } 
+            }
         }
     }
 
@@ -146,6 +194,26 @@ public class InputManager : MonoBehaviour
             foreach(var ot in onTouch) {
                 if (!isInvertKeyboardControls) ot.InvokeRightSideTouch(Vector3.zero);
                 else ot.InvokeLeftSideTouch(Vector3.zero);
+            }
+        }
+    }
+
+    private void PerformLeftSwipe(InputAction.CallbackContext context) {
+        if (useKeyboardControls) {            
+            var onTouch = FindObjectsOfType<MonoBehaviour>().OfType<IOnStartTouch>();            
+            foreach(var ot in onTouch) {
+                if (!isInvertKeyboardControls) ot.InvokeLeftSwipeTouch(Vector3.zero);
+                else ot.InvokeRightSwipeTouch(Vector3.zero);
+            }
+        }
+    }
+
+    private void PerformRightSwipe(InputAction.CallbackContext context) {
+        if (useKeyboardControls) {
+            var onTouch = FindObjectsOfType<MonoBehaviour>().OfType<IOnStartTouch>();            
+            foreach(var ot in onTouch) {
+                if (!isInvertKeyboardControls) ot.InvokeRightSwipeTouch(Vector3.zero);
+                else ot.InvokeLeftSwipeTouch(Vector3.zero);
             }
         }
     }

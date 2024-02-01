@@ -17,8 +17,22 @@ public class PauseMenu : MonoBehaviour
         GameManager.instance.UpdateGameState(GameManager.gameState.racingState);
     }
 
+    public void SettingsMenu()
+    {
+        GameManager.instance.UpdateGameState(GameManager.gameState.pauseSettingState);
+    }
+
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
+        GameManager.instance.UpdateGameState(GameManager.gameState.mainmenuState);
+    }
+
+    public void Restart()
+    {
+        Scene currentscene;
+        currentscene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentscene.buildIndex);
+        GameManager.instance.UpdateGameState(GameManager.gameState.readyState);
     }
 }
