@@ -4,10 +4,13 @@ using PresistentData;
 public class UserDataManager : MonoBehaviour
 {
     private UserPresistentData UPD;
-    private PresistentData.UserData userData;
+    private UserData userData;
     [SerializeField] private string userName = "Aaron";
     [SerializeField] private float[] levelData;
     [SerializeField] private int currency = 50;
+    [SerializeField] private GameObject slot;
+    private GameObject inslot;
+    private TMPro.TMP_Text tmpText;
     
 
     private void Awake()
@@ -17,25 +20,32 @@ public class UserDataManager : MonoBehaviour
         userData.currency = currency;
         string path = Application.persistentDataPath + "/UserData.json";
         UPD = new UserPresistentData(path);
+        
     }
 
+
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
             UPD.SaveData(userData);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            PresistentData.UserData data;
-            data = UPD.GetUserData();
-            Debug.Log($"Name: {data.userName} \n" +
-                      $"Level/time: {data.levelData.Length.ToString()}/{data.levelData[0].ToString()} \n" +
-                      $"Currency: {data.currency.ToString()}");
+            inslot = Instantiate(slot, transform);
+            tmpText = inslot.GetComponent<TMPro.TMP_Text>();
+            string text = $"Username: {userData.userName} \n" +
+                          $"Currency: {userData.currency.ToString()}";
+            tmpText.text = text;
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            
+            UPD.ClearJsonFile();
+            UPD.SaveData(UPD.defaultData);
+            if (!inslot) return;
+            string text = $"Username: {UPD.defaultData.userName} \n" +
+                          $"Currency: {UPD.defaultData.currency.ToString()}";
+            tmpText.text = text;
+
         }
     }
+#endif
 }

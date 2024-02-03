@@ -8,6 +8,7 @@ TagManager:
   - Water Current
   - boostarea
   - LeaderBoard
+  - BoostAreaTest
   layers:
   - Default
   - TransparentFX

@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: ce34dda0cbad53048b453f1a169d7d05
-  m_SerializeEntries:
-  - m_GUID: edf6eed9365996341aebd3a2b9fcf0df
-    m_Address: Assets/Prefabs/UI Prefabs/LeaderBoard/Slot.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - UI
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 4f4bceed31da93649b9ac284e8f678fc, type: 2}
   m_SchemaSet:

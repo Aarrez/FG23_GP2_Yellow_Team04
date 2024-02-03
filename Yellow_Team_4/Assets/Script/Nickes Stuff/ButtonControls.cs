@@ -5,31 +5,31 @@ using UnityEngine.UI;
 
 public class ButtonControls : MonoBehaviour
 {
-    public Button leftPlayerPaddle;
-    public Button leftPlayerHook;
-    public Button leftPlayerDuck;
+    public ControlButton leftPlayerPaddle;
+    public ControlButton leftPlayerHook;
+    public ControlButton leftPlayerDuck;
 
-    public Button rightPlayerPaddle;
-    public Button rightPlayerHook;
-    public Button rightPlayerDuck;
+    public ControlButton rightPlayerPaddle;
+    public ControlButton rightPlayerHook;
+    public ControlButton rightPlayerDuck;
 
-    public Button LeftPlayerPaddle {
+    public ControlButton LeftPlayerPaddle {
         get { return leftPlayerPaddle; }
     }
-    public Button LeftPlayerHook {
+    public ControlButton LeftPlayerHook {
         get { return leftPlayerHook; }
     }
-    public Button LeftPlayerDuck {
+    public ControlButton LeftPlayerDuck {
         get { return leftPlayerDuck; }
     }
 
-    public Button RightPlayerPaddle {
+    public ControlButton RightPlayerPaddle {
         get { return rightPlayerPaddle; }
     }
-    public Button RightPlayerHook {
+    public ControlButton RightPlayerHook {
         get { return rightPlayerHook; }
     }
-    public Button RightPlayerDuck {
+    public ControlButton RightPlayerDuck {
         get { return rightPlayerDuck; }
     }    
 
@@ -42,5 +42,5 @@ public class ButtonControls : MonoBehaviour
         rightPlayerHook = transform.Find("RightPlayer/Hook").GetComponent<Button>();
         rightPlayerDuck = transform.Find("RightPlayer/Duck").GetComponent<Button>();        
     }
-    */
+    */    
 }

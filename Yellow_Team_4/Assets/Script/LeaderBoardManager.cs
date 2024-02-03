@@ -21,58 +21,59 @@ public class LeaderBoardManager : MonoBehaviour
     {
         string jsonPath = Application.persistentDataPath + "/ScoreBoard.json";
         leaderBoard = new PresistentLeaderBoard(jsonPath);
-        buttons = GetComponentsInChildren<Button>();
-        slotContainer = GetComponentInChildren<VerticalLayoutGroup>().transform;
-        foreach (Button button in buttons)
-        {
-            switch (button.gameObject.name)
-            {
-                case "SendData":
-                    send = button;
-                    break;
-                case "ReadData":
-                    read = button;
-                    break;
-                case "ClearData":
-                    clear = button;
-                    break;
-            }
-        }
+        slotContainer = transform;
         inputName = GetComponentInChildren<TMPro.TMP_InputField>();
     }
-
+    
     private void OnEnable()
     {
-        send.onClick.AddListener(AddPlayerToLeaderBoard);
-        read.onClick.AddListener(ReadLeaderBoard);
-        clear.onClick.AddListener(ClearLeaderBoard);
-        inputName.onDeselect.AddListener(AddPlayerName);
-        inputName.onSubmit.AddListener(AddPlayerName);
+        ReadLeaderBoard();
     }
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            AddDefaultData();
+            ReadLeaderBoard();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            ClearLeaderBoard();
+            ReadLeaderBoard();
+        }
+    }
+    private void AddDefaultData()
+    {
+        leaderBoard.SaveData(leaderBoard.DefaultData[0]);
+    }
+    
+    public void ClearLeaderBoard()
+    {
+        leaderBoard.ClearJsonFile();
+    }
+#endif
 
+    private void ClearCurrentLeaderBorad()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+        slotsInstantiated.Clear();
+    }
+    
     private void ReadLeaderBoard()
     {
-        if(slotsInstantiated.Count <= 0)
-            foreach (GameObject s in slotsInstantiated)
-                Destroy(s);
+        ClearCurrentLeaderBorad();
         
-        Data[] dataset = leaderBoard.GetLeaderBorad(ref leaderBoard.stringLines);
+        Data[] dataset = leaderBoard.GetLeaderBorad();
         foreach (Data d in dataset)
         {
-            if (slotContainer.childCount > 5) return;
             slotsInstantiated.Add(Instantiate(slot, slotContainer));
             string text = $"Player: {d.name}, Score: {d.score.ToString()}, Time: {d.time.ToString()}" ;
             slotsInstantiated.Last().GetComponentInChildren<TMPro.TMP_Text>().text = text;
         }
-    }
-
-    private void OnDisable()
-    {
-        send.onClick.RemoveAllListeners();
-        read.onClick.RemoveAllListeners();
-        clear.onClick.RemoveAllListeners();
-        inputName.onSubmit.RemoveAllListeners();
-        inputName.onDeselect.RemoveAllListeners();
     }
     private void AddPlayerToLeaderBoard()
     {
@@ -81,13 +82,13 @@ public class LeaderBoardManager : MonoBehaviour
             Debug.LogError("Name Needed");
             return;
         }
-        leaderBoard.SavePartialData(data);
+        leaderBoard.SaveData(data);
         inputName.text = "";
     }
 
     private Data GetPlayerData(string playerName)
     {
-        return leaderBoard.GetLineByName(playerName, ref leaderBoard.stringLines);
+        return leaderBoard.GetLineByName(playerName);
     }
 
     private void AddPlayerName(string name)
@@ -95,12 +96,5 @@ public class LeaderBoardManager : MonoBehaviour
         data.name = name;
     }
 
-    private void ClearLeaderBoard()
-    {
-        leaderBoard.ClearJsonFile();
-        foreach (GameObject s in slotsInstantiated)
-        {
-            Destroy(s);
-        }
-    }
+   
 }

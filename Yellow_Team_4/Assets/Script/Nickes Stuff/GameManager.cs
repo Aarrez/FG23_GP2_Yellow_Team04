@@ -36,6 +36,12 @@ public class GameManager : MonoBehaviour
                 break;
             case gameState.settingsState:
                 break;
+            case gameState.leaderboardState:
+                break;
+            case gameState.customizationState:
+                break;
+            case gameState.storeState:
+                break;
             case gameState.levelSelectionState:
                 break;
             case gameState.readyState:
@@ -60,6 +66,9 @@ public class GameManager : MonoBehaviour
     {
         mainmenuState,
         settingsState,
+        leaderboardState,
+        customizationState,
+        storeState,
         levelSelectionState,
         readyState,
         racingState,

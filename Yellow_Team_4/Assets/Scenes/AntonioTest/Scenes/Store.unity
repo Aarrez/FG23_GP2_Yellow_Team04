@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 129251900}
   - component: {fileID: 129251899}
   - component: {fileID: 129251898}
+  - component: {fileID: 129251902}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -243,6 +244,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129251896}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &129251902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129251896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f411e588925a0954fb855a64ab324730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUnlocked: 0
 --- !u!1 &523485330
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,6 +440,7 @@ GameObject:
   - component: {fileID: 714984821}
   - component: {fileID: 714984820}
   - component: {fileID: 714984819}
+  - component: {fileID: 714984823}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -533,11 +548,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714984817}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &717084555 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8095840698248463600, guid: 7c8f0098714450844819509b26ec6913, type: 3}
-  m_PrefabInstance: {fileID: 1754295502}
+--- !u!114 &714984823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714984817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f411e588925a0954fb855a64ab324730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUnlocked: 0
 --- !u!4 &717084559 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 409936731196035461, guid: 7c8f0098714450844819509b26ec6913, type: 3}
@@ -556,6 +579,7 @@ GameObject:
   - component: {fileID: 740804232}
   - component: {fileID: 740804231}
   - component: {fileID: 740804230}
+  - component: {fileID: 740804234}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -663,6 +687,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 740804228}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &740804234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740804228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f411e588925a0954fb855a64ab324730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUnlocked: 0
 --- !u!1 &816066151
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,6 +805,7 @@ GameObject:
   - component: {fileID: 1297977337}
   - component: {fileID: 1297977336}
   - component: {fileID: 1297977340}
+  - component: {fileID: 1297977341}
   m_Layer: 0
   m_Name: platform
   m_TagString: Untagged
@@ -879,16 +917,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa8bee47564a06469cf9f41ab5e97a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stands:
-  - {fileID: 717084555}
-  - {fileID: 1376027906}
-  - {fileID: 1518168727}
-  - {fileID: 1746237618}
---- !u!1 &1376027906 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8095840698248463600, guid: 7c8f0098714450844819509b26ec6913, type: 3}
-  m_PrefabInstance: {fileID: 1451609228}
+  currentRotation: 0
+  rotationSpeed: 100
+--- !u!114 &1297977341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297977335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c94f24edb938c04ba5abbf743ff4515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 816066154}
+  highlightMaterialStand: {fileID: 2100000, guid: 849beec933d52fb41842f7f0237616ae, type: 2}
+  defaultMaterialStand: {fileID: 2100000, guid: ac9ddc248a1849849b6d144fa52aaf56, type: 2}
+  highlightMaterialItem: {fileID: 2100000, guid: 98f77603c0f15fd45aeaa5cb4601e699, type: 2}
+  defaultMaterialItem: {fileID: 2100000, guid: 7135812846a3adc4ea79da4ba0bb6003, type: 2}
 --- !u!4 &1376027907 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 409936731196035461, guid: 7c8f0098714450844819509b26ec6913, type: 3}
@@ -970,11 +1017,6 @@ PrefabInstance:
       addedObject: {fileID: 714984818}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c8f0098714450844819509b26ec6913, type: 3}
---- !u!1 &1518168727 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8095840698248463600, guid: 7c8f0098714450844819509b26ec6913, type: 3}
-  m_PrefabInstance: {fileID: 665390320}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1518168728 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 409936731196035461, guid: 7c8f0098714450844819509b26ec6913, type: 3}
@@ -1097,6 +1139,7 @@ GameObject:
   - component: {fileID: 1716435618}
   - component: {fileID: 1716435617}
   - component: {fileID: 1716435616}
+  - component: {fileID: 1716435621}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -1204,11 +1247,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 717084559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!1 &1746237618 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8095840698248463600, guid: 7c8f0098714450844819509b26ec6913, type: 3}
-  m_PrefabInstance: {fileID: 1977876522}
+--- !u!114 &1716435621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716435615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f411e588925a0954fb855a64ab324730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUnlocked: 1
 --- !u!4 &1746237619 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 409936731196035461, guid: 7c8f0098714450844819509b26ec6913, type: 3}

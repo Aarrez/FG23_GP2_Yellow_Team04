@@ -24,11 +24,11 @@ public class BallMovement : MonoBehaviour
         if (boostController.IsActive())
         {
            
-            currentSpeed = boostController.GetPlayerStats().maxSpeedHorizontal + boostController.GetPlayerStats().boostForce;
+            currentSpeed = boostController.GetPlayerStats().maxSpeed + boostController.GetPlayerStats().boostForce;
         }
         else
         {
-            currentSpeed = boostController.GetPlayerStats().maxSpeedHorizontal;
+            currentSpeed = boostController.GetPlayerStats().maxSpeed;
         }
 
         GetComponent<Rigidbody>().velocity= (movement * currentSpeed);

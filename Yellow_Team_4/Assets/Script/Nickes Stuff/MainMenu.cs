@@ -25,6 +25,21 @@ public class MainMenu : MonoBehaviour
       GameManager.instance.UpdateGameState(GameManager.gameState.settingsState);
    }
 
+   public void Leaderboard()
+   {
+      GameManager.instance.UpdateGameState(GameManager.gameState.leaderboardState);
+   }
+
+   public void Customization()
+   {
+      GameManager.instance.UpdateGameState(GameManager.gameState.customizationState);
+   }
+
+   public void Store()
+   {
+      GameManager.instance.UpdateGameState(GameManager.gameState.storeState);
+   }
+
    public void EnableMainMenu()
    {
       GameManager.instance.UpdateGameState(GameManager.gameState.mainmenuState);

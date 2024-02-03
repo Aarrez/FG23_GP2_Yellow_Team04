@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Unity.VisualScripting;
-using UnityEditor.AddressableAssets.HostingServices;
-using Object = UnityEngine.Object;
 
 namespace PresistentData
 {
@@ -21,28 +15,38 @@ namespace PresistentData
 
     public class UserPresistentData
     {
-        private byte[] jsonBytes;
+        private byte[] jsonBytes = new byte[128];
         private string dataPath;
+        public UserData defaultData;
         
         public UserPresistentData(string dataPath)
         {
             this.dataPath = dataPath;
             if (File.Exists(this.dataPath))
+            {
+                defaultData.userName = "newUser";
+                defaultData.currency = 0;
+                defaultData.levelData = new[] { 0.0f };
                 GetUserData();
+            }
         }
 
         public void SaveData(UserData uData)
         {
-            if (File.Exists(dataPath))
-            {
-                File.Delete(dataPath);
-            }
             string json = JsonConvert.SerializeObject(uData as object);
             jsonBytes = Encoding.UTF8.GetBytes(json);
             using (FileStream fs = File.Open(dataPath, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 AddText(fs, json);
             }
+        }
+
+        private void SaveDefaultData(FileStream fs ,UserData uData)
+        {
+            string json = JsonConvert.SerializeObject(uData as object);
+            jsonBytes = Encoding.UTF8.GetBytes(json);
+            AddText(fs, json);
+            
         }
         private static void AddText(FileStream fs, string value)
         {
@@ -52,18 +56,20 @@ namespace PresistentData
         
         public UserData GetUserData()
         {
-            if (!File.Exists(dataPath))
-                throw new NullReferenceException("There is no file to get data from");
-            
-            string line = "";
-            using (FileStream fs = File.Open(dataPath, FileMode.OpenOrCreate, FileAccess.Read))
+            string line;
+            using (FileStream fs = File.Open(dataPath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 UTF8Encoding temp = new UTF8Encoding(true);
                 int readLen;
-                while ((readLen = fs.Read(jsonBytes, 0, jsonBytes.Length)) > 0)
+                readLen = fs.Read(jsonBytes, 0, jsonBytes.Length);
+
+                if (readLen <= jsonBytes.Length / 2)
                 {
-                    line = temp.GetString(jsonBytes, 0, readLen);
+                    SaveDefaultData(fs, defaultData);
+                    readLen = fs.Read(jsonBytes, 0, jsonBytes.Length);
                 }
+                    
+                line = temp.GetString(jsonBytes, 0, readLen);
             }
 
             if (line.Length > 0)
@@ -72,7 +78,7 @@ namespace PresistentData
                 return convertedData;
             }
 
-            throw new Exception("File does not contain any data");
+            return defaultData;
         }
 
         public UserData ChangeUserData(UserData uData)

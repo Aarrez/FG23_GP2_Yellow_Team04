@@ -7,6 +7,9 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject mainMenuScreen;
     [SerializeField] private GameObject settingsScreen;
+    [SerializeField] private GameObject leaderboardScreen;
+    [SerializeField] private GameObject customizationScreen;
+    [SerializeField] private GameObject storeScreen;
     [SerializeField] private GameObject levelScreen;
     [SerializeField] private GameObject readyScreen;
     [SerializeField] private GameObject raceScreen;
@@ -38,6 +41,9 @@ public class UIManager : MonoBehaviour
     {
         mainMenuScreen.SetActive(state == GameManager.gameState.mainmenuState);
         settingsScreen.SetActive(state == GameManager.gameState.settingsState);
+        leaderboardScreen.SetActive(state == GameManager.gameState.leaderboardState);
+        customizationScreen.SetActive(state == GameManager.gameState.customizationState);
+        storeScreen.SetActive(state == GameManager.gameState.storeState);
         levelScreen.SetActive(state == GameManager.gameState.levelSelectionState);
         readyScreen.SetActive(state == GameManager.gameState.readyState);
         raceScreen.SetActive(state == GameManager.gameState.racingState);

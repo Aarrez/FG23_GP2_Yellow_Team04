@@ -6,14 +6,15 @@ using UnityEngine.UIElements;
 public class SpinPlatform : MonoBehaviour
 {
     
-    [SerializeField] private GameObject[] stands;
-    private int currentStandIndex = 0;
-    private int lastStandIndex = 0;
     
-    //[SerializeField] private GameObject stand01;
-    //[SerializeField] private GameObject stand02;
-    //[SerializeField] private GameObject stand03;
-    //[SerializeField] private GameObject stand04;
+    
+    // Rotation
+    
+    [SerializeField] private float currentRotation;
+    [SerializeField] private float rotationSpeed = 50f;
+    private float targetRotation = 0f;
+    private bool bIsSpinning = false;
+    const float spinningFactor = 90f;
     
     // Start is called before the first frame update
     void Start()
@@ -24,39 +25,43 @@ public class SpinPlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            print("Rotated Right");
-            Rotate("right");
-        }
+        Inputs();
+        RotatePlatform();
         
-        if (Input.GetKeyDown(KeyCode.A))
+    }
+
+    private void Inputs()
+    {
+        if (Input.GetKeyDown(KeyCode.D) && !bIsSpinning)
         {
-            print("Rotated Left");
-            Rotate("left");
+            targetRotation += spinningFactor;
+            bIsSpinning = true;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.A) && !bIsSpinning)
+        {
+            targetRotation -= spinningFactor;
+            bIsSpinning = true;
         }
     }
 
-    private void Rotate(string side)
+    private void RotatePlatform()
     {
-        if (side == "left")
-        {
+        
+     
             
-            transform.Rotate(0f, -90f, 0f, Space.Self);
-            lastStandIndex = currentStandIndex;
-            currentStandIndex++;
-        }
-
-        if (side == "right")
+        if (bIsSpinning)
         {
-            transform.Rotate(0f, 90f, 0f, Space.Self);
-            lastStandIndex = currentStandIndex;
-            currentStandIndex++;
-        }
-    }
+            float step = rotationSpeed * Time.deltaTime;
+            transform.rotation =
+                Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, targetRotation, 0), step);
 
-    private void ModifyStand()
-    {
-        //private GameObject stand = stands[currentStandIndex];
+        }
+
+        if (Quaternion.Angle(transform.rotation, Quaternion.Euler(0, targetRotation, 0)) < 0.1f)
+        {
+            transform.rotation = Quaternion.Euler(0, targetRotation, 0);
+            bIsSpinning = false;
+        }
     }
 }
