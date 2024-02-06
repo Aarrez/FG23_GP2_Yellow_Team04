@@ -2,22 +2,28 @@ using System;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
+using UnityEngine.Serialization;
 
 namespace PresistentData
 {
     [Serializable]
-    public struct UserData
+    public struct UserData<TStructInventory, TStructSettings> 
+        where TStructSettings : struct
+        where TStructInventory : struct
     {
         public string userName;
         public int currency;
         public float[] levelData;
+        public TStructInventory inventory;
+        public TStructSettings playerSettings;
     }
 
-    public class UserPresistentData
+    public class UserPresistentData<TStructInventory, TEnumSettings> 
+        where TEnumSettings : struct
+        where TStructInventory : struct
     {
-        private byte[] jsonBytes = new byte[128];
         private string dataPath;
-        public UserData defaultData;
+        public UserData<TStructInventory, TEnumSettings> defaultData;
         
         public UserPresistentData(string dataPath)
         {
@@ -31,21 +37,22 @@ namespace PresistentData
             }
         }
 
-        public void SaveData(UserData uData)
+        public void SaveData(UserData<TStructInventory, TEnumSettings> uData)
         {
             string json = JsonConvert.SerializeObject(uData as object);
-            jsonBytes = Encoding.UTF8.GetBytes(json);
-            using (FileStream fs = File.Open(dataPath, FileMode.OpenOrCreate, FileAccess.Write))
+            using (FileStream fs = File.Open(dataPath, FileMode.Create, FileAccess.Write))
             {
                 AddText(fs, json);
             }
         }
 
-        private void SaveDefaultData(FileStream fs ,UserData uData)
+        private void SaveDefaultData(UserData<TStructInventory, TEnumSettings> uData)
         {
             string json = JsonConvert.SerializeObject(uData as object);
-            jsonBytes = Encoding.UTF8.GetBytes(json);
-            AddText(fs, json);
+            using (FileStream fs = File.Open(dataPath, FileMode.Create, FileAccess.Write))
+            {
+                AddText(fs, json);
+            }
             
         }
         private static void AddText(FileStream fs, string value)
@@ -54,57 +61,58 @@ namespace PresistentData
             fs.Write(info, 0, info.Length);
         }
         
-        public UserData GetUserData()
+        public UserData<TStructInventory, TEnumSettings> GetUserData()
         {
-            string line;
-            using (FileStream fs = File.Open(dataPath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            string line = File.ReadAllTextAsync(dataPath).Result;
+            if (line.Length > 1)
             {
-                UTF8Encoding temp = new UTF8Encoding(true);
-                int readLen;
-                readLen = fs.Read(jsonBytes, 0, jsonBytes.Length);
-
-                if (readLen <= jsonBytes.Length / 2)
-                {
-                    SaveDefaultData(fs, defaultData);
-                    readLen = fs.Read(jsonBytes, 0, jsonBytes.Length);
-                }
-                    
-                line = temp.GetString(jsonBytes, 0, readLen);
-            }
-
-            if (line.Length > 0)
-            {
-                UserData convertedData = JsonConvert.DeserializeObject<UserData>(line);
+                UserData<TStructInventory, TEnumSettings> convertedData = JsonConvert.DeserializeObject<UserData<TStructInventory, TEnumSettings>>(line);
                 return convertedData;
             }
-
+            SaveDefaultData(defaultData);
             return defaultData;
         }
 
-        public UserData ChangeUserData(UserData uData)
+        public UserData<TStructInventory, TEnumSettings> ChangeUserData(UserData<TStructInventory, TEnumSettings> uData)
         {
             SaveData(uData);
             return uData;
         }
-        public UserData ChangeUserData(string userName)
+        public UserData<TStructInventory, TEnumSettings> ChangeUserData(string userName)
         {
-            UserData dataToChange = GetUserData();
+            UserData<TStructInventory, TEnumSettings> dataToChange = GetUserData();
             dataToChange.userName = userName;
             SaveData(dataToChange);
             return dataToChange;
         }
-        public UserData ChangeUserData(float[] levelData)
+        public UserData<TStructInventory, TEnumSettings> ChangeUserData(float[] levelData)
         {
-            UserData dataToChange = GetUserData();
+            UserData<TStructInventory, TEnumSettings> dataToChange = GetUserData();
             dataToChange.levelData = levelData;
             SaveData(dataToChange);
             return dataToChange;
         }
         
-        public UserData ChangeUserData(int currency)
+        public UserData<TStructInventory, TEnumSettings> ChangeUserData(int currency)
         {
-            UserData dataToChange = GetUserData();
+            UserData<TStructInventory, TEnumSettings> dataToChange = GetUserData();
             dataToChange.currency = currency;
+            SaveData(dataToChange);
+            return dataToChange;
+        }
+        
+        public UserData<TStructInventory, TEnumSettings> ChangeUserData(TEnumSettings kayak)
+        {
+            UserData<TStructInventory, TEnumSettings> dataToChange = GetUserData();
+            dataToChange.playerSettings = kayak;
+            SaveData(dataToChange);
+            return dataToChange;
+        }
+        
+        public UserData<TStructInventory, TEnumSettings> ChangeUserData(TStructInventory inventory)
+        {
+            UserData<TStructInventory, TEnumSettings> dataToChange = GetUserData();
+            dataToChange.inventory = inventory;
             SaveData(dataToChange);
             return dataToChange;
         }

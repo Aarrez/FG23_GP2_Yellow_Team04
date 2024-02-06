@@ -3,7 +3,27 @@ guid: 7d9b6d3e547f63f4cb9ae905a4dec474
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sewer_Walls
+    second: {fileID: 2100000, guid: 1516c164fbfca7e48a00b63daf80da8d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Trim Sheet
+    second: {fileID: 2100000, guid: f0c5693f36a818246a38e1f7de6de239, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Walkway
+    second: {fileID: 2100000, guid: 4bf69f09035fd69469e3c59949cd3599, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Water
+    second: {fileID: 2100000, guid: cc0e64be0fadeb84fabb59db7781a58c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -9,7 +9,7 @@ namespace PresistentData
 {
     
     [Serializable]
-    public struct Data
+    public struct LeaderBoardData
     { 
         public string name;
         public int score;
@@ -21,7 +21,7 @@ namespace PresistentData
     public string[] StringLines = Array.Empty<string>();
     private string jsonPath;
     private List<byte[]> byteList = new();
-    public Data[] DefaultData;
+    public LeaderBoardData[] DefaultData;
     private string dname = "Default";
     private int dscore = 12;
     private float dtime = 3.14f;
@@ -32,7 +32,7 @@ namespace PresistentData
         this.jsonPath = jsonPath;
         if (File.Exists(jsonPath))
             UpdateCurrentData();
-        DefaultData = new Data[1];
+        DefaultData = new LeaderBoardData[1];
         DefaultData[0].name = dname;
         DefaultData[0].score = dscore;
         DefaultData[0].time = dtime;
@@ -51,9 +51,9 @@ namespace PresistentData
         UpdateCurrentData();
     }
 
-    public void SaveData(Data data)
+    public void SaveData(LeaderBoardData leaderBoardData)
     {
-        object p = data as object;
+        object p = leaderBoardData as object;
         string json = JsonConvert.SerializeObject(p);
         byteList.Clear();
         UpdateCurrentData(json);
@@ -91,30 +91,30 @@ namespace PresistentData
         byte[] info = new UTF8Encoding(true).GetBytes(value);
         fs.Write(info, 0, info.Length);
     }
-    public Data[] GetLeaderBorad()
+    public LeaderBoardData[] GetLeaderBoard()
     {
         StringLines = File.ReadAllLinesAsync(jsonPath).Result;
         for (int i = 0; i < StringLines.Length; i++)
         {
             if (StringLines[i].Length <= 0)
             {
-                StringLines = StringLines.Where((val, idx) => idx !=  i).ToArray();
+                StringLines = StringLines.Where((_, idx) => idx !=  i).ToArray();
             }
         }
         if (StringLines.Length <= 0)
         {
             SaveData(DefaultData[0]);
         }
-        Data[] convertedData = new Data[StringLines.Length];
+        LeaderBoardData[] convertedData = new LeaderBoardData[StringLines.Length];
         for (int i = 0; i < StringLines.Length; i++)
         {
-            convertedData[i] = JsonConvert.DeserializeObject<Data>(StringLines[i]);
+            convertedData[i] = JsonConvert.DeserializeObject<LeaderBoardData>(StringLines[i]);
         }
         
         return convertedData;
     }
 
-    public Data GetLineByName(string name)
+    public LeaderBoardData GetLineByName(string name)
     {
         int i;
         for (i = 0; i < StringLines.Length; i++)
@@ -124,7 +124,7 @@ namespace PresistentData
                 break;
             }
         }
-        Data temp = JsonConvert.DeserializeObject<Data>(StringLines[i]);
+        LeaderBoardData temp = JsonConvert.DeserializeObject<LeaderBoardData>(StringLines[i]);
         return temp;
     }
 

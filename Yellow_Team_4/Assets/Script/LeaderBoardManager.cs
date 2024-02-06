@@ -1,16 +1,20 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PresistentData;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class LeaderBoardManager : MonoBehaviour
 {
+    public static UnityAction<string, int, float, bool> SaveLeaderboardData;
+    public static Func<string> GetName; 
     
     [SerializeField] private GameObject slot;
     private List<GameObject> slotsInstantiated = new();
     private Transform slotContainer;
-    private Data data;
+    private LeaderBoardData leaderBoardData;
     private Button[] buttons;
     private Button send, read, clear;
     private PresistentLeaderBoard leaderBoard;
@@ -28,6 +32,12 @@ public class LeaderBoardManager : MonoBehaviour
     private void OnEnable()
     {
         ReadLeaderBoard();
+        SaveLeaderboardData += AddLeaderBoardData;
+    }
+
+    private void OnDisable()
+    {
+        SaveLeaderboardData -= AddLeaderBoardData;
     }
 #if UNITY_EDITOR
     private void Update()
@@ -67,34 +77,27 @@ public class LeaderBoardManager : MonoBehaviour
     {
         ClearCurrentLeaderBorad();
         
-        Data[] dataset = leaderBoard.GetLeaderBorad();
-        foreach (Data d in dataset)
+        LeaderBoardData[] dataset = leaderBoard.GetLeaderBoard();
+        foreach (LeaderBoardData d in dataset)
         {
             slotsInstantiated.Add(Instantiate(slot, slotContainer));
             string text = $"Player: {d.name}, Score: {d.score.ToString()}, Time: {d.time.ToString()}" ;
             slotsInstantiated.Last().GetComponentInChildren<TMPro.TMP_Text>().text = text;
         }
     }
-    private void AddPlayerToLeaderBoard()
+
+    private void AddLeaderBoardData(string name, int score, float time, bool completedLevel)
     {
-        if (data.name == null)
-        {
-            Debug.LogError("Name Needed");
-            return;
-        }
-        leaderBoard.SaveData(data);
-        inputName.text = "";
+        LeaderBoardData lLeaderBoardData = new LeaderBoardData();
+        lLeaderBoardData.name = name;
+        lLeaderBoardData.score = score;
+        lLeaderBoardData.time = time;
+        lLeaderBoardData.completedLevel = completedLevel;
+        leaderBoard.SaveData(lLeaderBoardData);
     }
 
-    private Data GetPlayerData(string playerName)
+    private LeaderBoardData GetPlayerData(string playerName)
     {
         return leaderBoard.GetLineByName(playerName);
     }
-
-    private void AddPlayerName(string name)
-    {
-        data.name = name;
-    }
-
-   
 }

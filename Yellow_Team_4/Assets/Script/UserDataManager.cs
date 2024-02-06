@@ -1,51 +1,85 @@
+using System;
 using UnityEngine;
 using PresistentData;
+using GlobalStructs;
+using UnityEngine.Events;
 
 public class UserDataManager : MonoBehaviour
 {
-    private UserPresistentData UPD;
-    private UserData userData;
-    [SerializeField] private string userName = "Aaron";
-    [SerializeField] private float[] levelData;
-    [SerializeField] private int currency = 50;
-    [SerializeField] private GameObject slot;
+    public static UnityAction<LevelCompleteStats> LevelComplete;
+    public static Func<SoundVolume> GetSavedVolume;
+    public static Action<SoundVolume> SetSavedVolume;
+    
+    private UserPresistentData<Inventory, PlayerSettings> upd;
     private GameObject inslot;
     private TMPro.TMP_Text tmpText;
     
 
     private void Awake()
     {
-        userData.userName = userName;
-        userData.levelData = levelData;
-        userData.currency = currency;
         string path = Application.persistentDataPath + "/UserData.json";
-        UPD = new UserPresistentData(path);
-        
+        upd = new UserPresistentData<Inventory, PlayerSettings>(path);
+    }
+
+    private void OnEnable()
+    {
+        LevelComplete += CompletedLevel;
+        GetSavedVolume += GetSavedVolumeMethod;
+        SetSavedVolume += ChangeSavedVolumeMethod;
+        LeaderBoardManager.GetName += () => upd.GetUserData().userName;
+    }
+    
+    private void OnDisable()
+    {
+        LevelComplete -= CompletedLevel;
+        GetSavedVolume -= GetSavedVolumeMethod;
+        SetSavedVolume -= ChangeSavedVolumeMethod;
+        LeaderBoardManager.GetName -= () => upd.GetUserData().userName;
     }
 
 
-#if UNITY_EDITOR
+/*#if UNITY_EDITOR
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            UPD.SaveData(userData);
-            inslot = Instantiate(slot, transform);
-            tmpText = inslot.GetComponent<TMPro.TMP_Text>();
-            string text = $"Username: {userData.userName} \n" +
-                          $"Currency: {userData.currency.ToString()}";
-            tmpText.text = text;
-        }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            UPD.ClearJsonFile();
-            UPD.SaveData(UPD.defaultData);
+            upd.ClearJsonFile();
+            upd.SaveData(upd.defaultData);
             if (!inslot) return;
-            string text = $"Username: {UPD.defaultData.userName} \n" +
-                          $"Currency: {UPD.defaultData.currency.ToString()}";
+            string text = $"Username: {upd.defaultData.userName} \n" +
+                          $"Currency: {upd.defaultData.currency.ToString()}";
             tmpText.text = text;
 
         }
     }
-#endif
+#endif*/
+    private void CompletedLevel(LevelCompleteStats lcs)
+    {
+        var data = upd.GetUserData();
+        data.currency = lcs.CurrencyEarned;
+        if (data.levelData.Length <= lcs.Level)
+        {
+            data.levelData = new float[lcs.Level];
+            data.levelData[lcs.Level - 1] = lcs.Time;
+        }
+        else
+            data.levelData[lcs.Level - 1] = lcs.Time;
+
+        upd.ChangeUserData(data);
+    }
+
+    private void ChangeSavedVolumeMethod(SoundVolume sv)
+    {
+        var userdata = upd.GetUserData();
+        userdata.playerSettings.soundVolume = sv;
+        upd.ChangeUserData(userdata);
+    }
+
+    private SoundVolume GetSavedVolumeMethod()
+    {
+        var userdata = upd.GetUserData();
+        return userdata.playerSettings.soundVolume;
+    }
 }
+
+

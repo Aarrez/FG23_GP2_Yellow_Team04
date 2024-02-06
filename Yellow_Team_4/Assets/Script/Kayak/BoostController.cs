@@ -81,12 +81,12 @@ public class BoostController : MonoBehaviour, IKayakEntity
 
     private void ApplyBoostForce()
     {
-        if (playerStats != null && kayak.rb != null)
+        if (playerStats != null && kayak != null)
         {
             Vector3 boostDirection = transform.forward.normalized;
             Vector3 boostForce = boostDirection * playerStats.boostForce;
 
-            kayak.rb.AddForce(boostForce, ForceMode.VelocityChange);
+            kayak.AddForce(boostDirection, boostForce.magnitude, ForceMode.VelocityChange);
         }
         else
         {

@@ -105,15 +105,15 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DisplacementScale: 0.5
-    - _DisplacementSpeed: 0.03
+    - _DisplacementScale: 0.3
+    - _DisplacementSpeed: 0.1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FoamCutoff: 10
-    - _FoamScale: 60.33
-    - _FoamSpeed: 3.36
-    - _FoamStrength: 5
+    - _FoamScale: 3000
+    - _FoamSpeed: 4.51
+    - _FoamStrength: 1000
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0

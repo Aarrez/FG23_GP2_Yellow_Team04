@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/NickeTest/NickeTestScene.unity
     guid: 553c82eaf54745b4eae850fba4e19670
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: bd3a61934c1fa6349b36767c3d1fb0b1, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 8d1e59c4d8ac23d4d8fbd5ae77f81b43, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 5bb65d62ffdf1a343a96a0f4297f38da, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 7419f83690ebf3f428727d7fe89aa678, type: 2}
     com.unity.addressableassets: {fileID: 11400000, guid: 821f37a90540a0d42b5dbd58affbf397, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 7eae7593ea84954458b26215d2776a52, type: 2}
