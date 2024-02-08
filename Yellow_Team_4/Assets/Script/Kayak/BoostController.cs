@@ -1,12 +1,20 @@
 using UnityEngine;
 using TestData;
+using UnityEditor.ShaderGraph.Internal;
+using UnityEngine.Serialization;
+
 public class BoostController : MonoBehaviour, IKayakEntity
 {
     private float boostTimer;
     private bool boosting;
     public TestData.TestData playerStats;  // Assign this in the Unity Editor
     private Kayak kayak;
+    private Vector3 boostDirection;
+    private Vector3 cheatDirection;
+    [SerializeField] private float cheatRadius = 5;
+    [Range(0, 1)][SerializeField] private float cheatNudgeInfluence = 1;
 
+    private Transform closestCheatObject;
     public void Initialize(Kayak kayak)
     {
         this.kayak = kayak as Kayak; 
@@ -19,17 +27,18 @@ public class BoostController : MonoBehaviour, IKayakEntity
     }
 
     public void OnFixedUpdate(float dt) {
-
+        if (boosting) {
+            ApplyBoostForce(dt);
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger entered: " + other.tag); 
         if (other.CompareTag("BoostAreaTest"))
         {
             Debug.Log("Boost area detected!");
             StartSpeedBoost();
-            
+            boostDirection = other.transform.forward;
         }
     }
 
@@ -57,9 +66,37 @@ public class BoostController : MonoBehaviour, IKayakEntity
         {
             boostTimer -= Time.deltaTime;
             Debug.Log(boostTimer);
+            
+            var hits = Physics.OverlapSphere(transform.position, cheatRadius);
+            float closestItem = float.MaxValue;
+            closestCheatObject = null;
+            cheatDirection = Vector3.zero;
+            foreach (var hit in hits)
+            {
+                if (hit.CompareTag("COIN"))
+                {
+                    var dist = (hit.transform.position - transform.position).magnitude;
+                    if (dist < closestItem)
+                    {
+                        closestCheatObject = hit.gameObject.transform;
+                        closestItem = dist;
+                    }
+                }
+            }
+            
+            if (closestCheatObject != null && closestCheatObject.gameObject.activeSelf)
+            {
+                cheatDirection = (closestCheatObject.transform.position - transform.position).normalized;
+                if (Vector3.Dot(cheatDirection, boostDirection) < 0)
+                {
+                    cheatDirection = Vector3.zero;
+                }
+            }
 
             if (boostTimer <= 0f)
             {
+                closestCheatObject = null;
+                cheatDirection = Vector3.zero;
                 boosting = false;
             }
         }
@@ -71,7 +108,7 @@ public class BoostController : MonoBehaviour, IKayakEntity
         {
             boosting = true;
             boostTimer = playerStats.boostDuration;
-            ApplyBoostForce();
+            ApplyBoostForce(Time.fixedDeltaTime);
         }
         else
         {
@@ -79,18 +116,27 @@ public class BoostController : MonoBehaviour, IKayakEntity
         }
     }
 
-    private void ApplyBoostForce()
+    private void ApplyBoostForce(float dt)
     {
         if (playerStats != null && kayak != null)
         {
-            Vector3 boostDirection = transform.forward.normalized;
             Vector3 boostForce = boostDirection * playerStats.boostForce;
-
-            kayak.AddForce(boostDirection, boostForce.magnitude, ForceMode.VelocityChange);
+            var finalDirection = (boostDirection + (cheatDirection * cheatNudgeInfluence)).normalized;
+            kayak.AddForce(finalDirection, boostForce.magnitude, dt, ForceMode.VelocityChange);
         }
         else
         {
             Debug.LogError("PlayerStats or Rigidbody is null in BoostController");
         }
     }
+    
+    #if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, transform.position + cheatDirection.normalized * 3);
+        
+        Gizmos.DrawWireSphere(transform.position, cheatRadius);
+    }
+    #endif
 }

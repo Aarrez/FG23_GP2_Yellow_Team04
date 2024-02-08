@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d19dd6bd-a9e8-4f84-a3d3-df8e85a1b6db}">
+		<property name="assetPath">
+			<value>Enviro/close drip water.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>16.746604166666668</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{5992255f-b7ea-4b60-a666-f12f01f12335}</destination>
+		</relationship>
+	</object>
+</objects>

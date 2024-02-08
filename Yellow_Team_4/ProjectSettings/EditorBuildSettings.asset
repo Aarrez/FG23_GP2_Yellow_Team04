@@ -5,12 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameScenes/MainMenu.unity
     guid: 6f35c855a780e134dbe4b059a4560015
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/NickeTest/NickeTestScene.unity
     guid: 553c82eaf54745b4eae850fba4e19670
+  - enabled: 1
+    path: Assets/Scenes/FabioTest/Latest/MainMenuAlpha.unity
+    guid: 43f77d0ab1b51184d8737f777a8f1d9a
+  - enabled: 1
+    path: Assets/Scenes/AndreasTest/AndreasTestScene.unity
+    guid: 728ccb73d56cbf84888c7a8298d882ff
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: bd3a61934c1fa6349b36767c3d1fb0b1, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 8d1e59c4d8ac23d4d8fbd5ae77f81b43, type: 2}

@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mainMenuScreen;
     [SerializeField] private GameObject settingsScreen;
     [SerializeField] private GameObject leaderboardScreen;
+    [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject customizationScreen;
     [SerializeField] private GameObject storeScreen;
     [SerializeField] private GameObject levelScreen;
@@ -37,6 +38,16 @@ public class UIManager : MonoBehaviour
         GameManager.onGameStateChanged -= GameManagerOnonGameStateChanged;
     }
 
+    public void EnableScreen(GameObject enableObject)
+    {
+        enableObject.SetActive(true);
+    }
+
+    public void DisableScreen(GameObject disableObject)
+    {
+        disableObject.SetActive(false);
+    }
+
     private void GameManagerOnonGameStateChanged(GameManager.gameState state)
     {
         mainMenuScreen.SetActive(state == GameManager.gameState.mainmenuState);
@@ -45,6 +56,7 @@ public class UIManager : MonoBehaviour
         customizationScreen.SetActive(state == GameManager.gameState.customizationState);
         storeScreen.SetActive(state == GameManager.gameState.storeState);
         levelScreen.SetActive(state == GameManager.gameState.levelSelectionState);
+        loadingScreen.SetActive(state == GameManager.gameState.loadingState);
         readyScreen.SetActive(state == GameManager.gameState.readyState);
         raceScreen.SetActive(state == GameManager.gameState.racingState);
         pauseScreen.SetActive(state == GameManager.gameState.pauseState);

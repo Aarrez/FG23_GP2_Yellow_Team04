@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
                 break;
             case gameState.levelSelectionState:
                 break;
+            case gameState.loadingState:
+                break;
             case gameState.readyState:
                 Time.timeScale = 0;
                 break;
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
         onGameStateChanged.Invoke(newState);
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
     }
     public enum gameState
     {
@@ -70,6 +73,7 @@ public class GameManager : MonoBehaviour
         customizationState,
         storeState,
         levelSelectionState,
+        loadingState,
         readyState,
         racingState,
         pauseState,
@@ -79,7 +83,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator delayedFpsOptim()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
     }
 }

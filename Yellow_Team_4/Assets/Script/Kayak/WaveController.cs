@@ -28,7 +28,7 @@ public class WaveController : MonoBehaviour
     {
         var normalizedX = worldX / planeExtent;
         var height = amplitude * (Mathf.Sin((normalizedX * frequency) + (Time.time * speed)) + 1); 
-        return height;
+        return height + transform.position.y;
     }
     
 }

@@ -11,7 +11,20 @@ public class MainMenu : MonoBehaviour
    public void StartGame(int index)
    {
       SceneManager.LoadScene(index);
-      GameManager.instance.UpdateGameState(GameManager.gameState.readyState);
+      GameManager.instance.UpdateGameState(GameManager.gameState.loadingState);
+      SceneManager.sceneLoaded += ReadyUp;
+   }
+
+   void ReadyUp(Scene scene, LoadSceneMode mode)
+   {
+      if (SceneManager.GetActiveScene() != SceneManager.GetSceneByBuildIndex(0))
+      {
+         GameManager.instance.UpdateGameState(GameManager.gameState.readyState);
+      }
+      else
+      {
+         GameManager.instance.UpdateGameState(GameManager.gameState.mainmenuState);
+      }
    }
 
    public void LevelSelection()

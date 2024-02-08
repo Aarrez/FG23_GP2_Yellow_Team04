@@ -14,7 +14,9 @@ public class HookController : MonoBehaviour, IKayakEntity
     [Range(0, 1)][SerializeField] private float direction;
     [SerializeField] private Vector3 hookOffset;
     [SerializeField] private float hookDistance = 1;
-    [SerializeField] private float hookStrength = 2;
+    [SerializeField] public float hookStrength = 2;
+    [SerializeField] private float hookDisengageRadius = 0.5f;
+    [Range(0, 1)] [SerializeField] private float hookVeclocityOffsetMultipler = 0;  
     [SerializeField] private EHookState currentState;
 
     // [SerializeField] float jointSpring = 10f;
@@ -26,8 +28,12 @@ public class HookController : MonoBehaviour, IKayakEntity
 
     private Vector3 leftHookPoint;
     private Vector3 rightHookPoint;
+    private Vector3 mainHookPoint;
 
     private Kayak kayak;   
+
+    private bool isRightDown;
+    private bool isLeftDown;
 
     public void Initialize(Kayak entity)
     {
@@ -45,22 +51,23 @@ public class HookController : MonoBehaviour, IKayakEntity
         var rightDirection = Vector3.Lerp(transform.forward, transform.right, direction).normalized;
 
         if (currentState.HasFlag(EHookState.LEFTHOOK) && currentState.HasFlag(EHookState.RIGHTHOOK)) {
-            kayak.AddForce((rightDirection + leftDirection).normalized, hookStrength, ForceMode.Force);            
+            kayak.AddForce((rightDirection + leftDirection).normalized, hookStrength, dt, ForceMode.Force);            
         } else if (currentState.HasFlag(EHookState.RIGHTHOOK)) {
             // kayak.rb.velocity = CalculateAngularVelocity(rightDirection, rightHookPoint, new Vector3(kayak.rb.velocity.x, 0, kayak.rb.velocity.z));
             // kayak.rb.velocity = CalculateJumpVelocity(transform.position, rightHookPoint, 0);                
-            kayak.AddForce(rightDirection, hookStrength, ForceMode.Force);            
+            kayak.AddForce(rightDirection, hookStrength, dt, ForceMode.Force);            
         } else if (currentState.HasFlag(EHookState.LEFTHOOK)) {            
             // kayak.rb.velocity = CalculateAngularVelocity(leftDirection, leftHookPoint, new Vector3(kayak.rb.velocity.x, 0, kayak.rb.velocity.z));
             // kayak.rb.velocity = CalculateJumpVelocity(transform.position, leftHookPoint, 0);
-            kayak.AddForce(leftDirection, hookStrength, ForceMode.Force);          
+            kayak.AddForce(leftDirection, hookStrength, dt, ForceMode.Force);          
         }
         #else
-        var leftDirection = Vector3.Lerp(transform.up, transform.forward, direction).normalized;
-        var rightDirection = Vector3.Lerp(transform.up, transform.forward, direction).normalized;
+        // var leftDirection = Vector3.Lerp(transform.up, transform.forward, direction).normalized;
+        // var rightDirection = Vector3.Lerp(transform.up, transform.forward, direction).normalized;
 
+        var hookForceDirection = (mainHookPoint - transform.position).normalized;
         if (currentState.HasFlag(EHookState.LEFTHOOK) && currentState.HasFlag(EHookState.RIGHTHOOK)) {
-            kayak.AddForce((rightDirection + leftDirection).normalized, hookStrength, ForceMode.Force);            
+            kayak.AddForce(hookForceDirection, hookStrength, dt, ForceMode.Force);            
         }
         #endif
     }
@@ -70,7 +77,7 @@ public class HookController : MonoBehaviour, IKayakEntity
         rightRenderer.SetPosition(index: 0, transform.position);
         leftRenderer.SetPosition(index: 0, transform.position); 
         
-        if (Input.GetKey(KeyCode.I)) {
+        if (Input.GetKeyDown(KeyCode.I)) {
             OnRightHookDown();
         }
 
@@ -84,14 +91,34 @@ public class HookController : MonoBehaviour, IKayakEntity
         
         if (Input.GetKeyUp(KeyCode.W)) {
             OnLeftHookUp();
-        }        
+        }
+
+        #if USE_DOUBLE_HOOK
+        if (currentState.HasFlag(EHookState.LEFTHOOK)) {
+            if ((transform.position - leftHookPoint).magnitude < hookDisengageRadius) {
+                OnLeftHookUp();
+            }
+        }
+        if (currentState.HasFlag(EHookState.RIGHTHOOK)) {
+            if ((transform.position - rightHookPoint).magnitude < hookDisengageRadius) {
+                OnRightHookUp();
+            }
+        }
+        #else
+        if (currentState.HasFlag(EHookState.LEFTHOOK) && currentState.HasFlag(EHookState.RIGHTHOOK)) {
+            if ((transform.position - mainHookPoint).magnitude < hookDisengageRadius) {
+                OnRightHookUp();
+                OnLeftHookUp();
+            }            
+        }                
+        #endif        
     }
 
     public void OnRightHookDown() {
         #if USE_DOUBLE_HOOK
         var rightDirection = Vector3.Lerp(transform.forward, transform.right, direction).normalized;
         RaycastHit rightHit;
-        var isRightHit = Physics.Raycast(transform.position + hookOffset, rightDirection, out rightHit, hookDistance, whatIsGrappleable);
+        var isRightHit = Physics.Raycast(transform.position + transform.TransformVector(hookOffset), rightDirection, out rightHit, hookDistance, whatIsGrappleable);
         if (isRightHit) {
             rightRenderer.enabled = true;
             rightHookPoint = rightHit.point;
@@ -99,9 +126,16 @@ public class HookController : MonoBehaviour, IKayakEntity
             currentState |= EHookState.RIGHTHOOK;            
         }
         #else
+        if (currentState.HasFlag(EHookState.LEFTHOOK) && currentState.HasFlag(EHookState.RIGHTHOOK)) {
+            return;
+        }
+
         var rightDirection = Vector3.Lerp(transform.up, transform.forward, direction).normalized;
-        RaycastHit rightHit;
-        var isRightHit = Physics.Raycast(transform.position + hookOffset, rightDirection, out rightHit, hookDistance, whatIsGrappleable);
+        RaycastHit rightHit;        
+        
+        var horizontalVel = transform.forward * new Vector3(kayak.Velocity.x, 0, kayak.Velocity.z).magnitude;       
+        
+        var isRightHit = Physics.Raycast(transform.position + (horizontalVel * hookVeclocityOffsetMultipler) + transform.TransformVector(hookOffset), rightDirection, out rightHit, hookDistance, whatIsGrappleable);
         if (isRightHit) {
             rightHookPoint = rightHit.point;
             currentState |= EHookState.RIGHTHOOK;
@@ -110,6 +144,7 @@ public class HookController : MonoBehaviour, IKayakEntity
                 if (leftRenderer.enabled) leftRenderer.enabled = false;
                 rightRenderer.enabled = true;
                 rightRenderer.SetPosition(index: 1, rightHit.point);
+                mainHookPoint = rightHookPoint;
             } 
         }
         #endif
@@ -119,7 +154,7 @@ public class HookController : MonoBehaviour, IKayakEntity
         #if USE_DOUBLE_HOOK
         var leftDirection = Vector3.Lerp(transform.forward, -transform.right, direction).normalized;
         RaycastHit leftHit;
-        var isLeftHit = Physics.Raycast(transform.position + hookOffset, leftDirection, out leftHit, hookDistance, whatIsGrappleable);
+        var isLeftHit = Physics.Raycast(transform.position + transform.TransformVector(hookOffset), leftDirection, out leftHit, hookDistance, whatIsGrappleable);
         if (isLeftHit) {
             leftRenderer.enabled = true;
             leftHookPoint = leftHit.point;
@@ -127,9 +162,15 @@ public class HookController : MonoBehaviour, IKayakEntity
             currentState |= EHookState.LEFTHOOK;
         }
         #else
+        if (currentState.HasFlag(EHookState.LEFTHOOK) && currentState.HasFlag(EHookState.RIGHTHOOK)) {
+            return;
+        }
+
+        var horizontalVel = transform.forward * new Vector3(kayak.Velocity.x, 0, kayak.Velocity.z).magnitude;
+        
         var leftDirection = Vector3.Lerp(transform.up, transform.forward, direction).normalized;
         RaycastHit leftHit;
-        var isLeftHit = Physics.Raycast(transform.position + hookOffset, leftDirection, out leftHit, hookDistance, whatIsGrappleable);
+        var isLeftHit = Physics.Raycast(transform.position + (horizontalVel * hookVeclocityOffsetMultipler) + transform.TransformVector(hookOffset), leftDirection, out leftHit, hookDistance, whatIsGrappleable);
         if (isLeftHit) {
             leftHookPoint = leftHit.point;            
             currentState |= EHookState.LEFTHOOK;
@@ -138,6 +179,7 @@ public class HookController : MonoBehaviour, IKayakEntity
                 if (rightRenderer.enabled) rightRenderer.enabled = false;
                 leftRenderer.enabled = true;
                 leftRenderer.SetPosition(index: 1, leftHit.point);
+                mainHookPoint = leftHookPoint;
             }
         }
         #endif
@@ -190,22 +232,35 @@ public class HookController : MonoBehaviour, IKayakEntity
 
     #if UNITY_EDITOR
     void OnDrawGizmos() {
-        //var leftDirection = Vector3.Lerp(transform.forward, -transform.right, direction);
+        #if USE_DOUBLE_HOOK
+        var leftDirection = Vector3.Lerp(transform.forward, -transform.right, direction);
+        var rightDirection = Vector3.Lerp(transform.forward, transform.right, direction); 
+        #else
         var leftDirection = Vector3.Lerp(transform.up, transform.forward, direction);
-        //var rightDirection = Vector3.Lerp(transform.forward, transform.right, direction); 
         var rightDirection = Vector3.Lerp(transform.up, transform.forward, direction); 
+        #endif
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(transform.position + hookOffset, transform.position + hookOffset + rightDirection * 3);
-        Gizmos.DrawLine(transform.position  + hookOffset, transform.position + hookOffset + leftDirection * 3);
+        var horizontalVel = Vector3.zero;    
+        if (kayak != null) {
+            horizontalVel = transform.forward * new Vector3(kayak.Velocity.x, 0, kayak.Velocity.z).magnitude;
+        }
+        Gizmos.DrawWireSphere(transform.position + (horizontalVel * hookVeclocityOffsetMultipler) + transform.TransformVector(hookOffset), 0.1f);
+        Gizmos.DrawLine(transform.position + (horizontalVel * hookVeclocityOffsetMultipler) + transform.TransformVector(hookOffset), transform.position + (horizontalVel * hookVeclocityOffsetMultipler) + transform.TransformVector(hookOffset) + (rightDirection.normalized * hookDistance));
+        Gizmos.DrawLine(transform.position + (horizontalVel * hookVeclocityOffsetMultipler) + transform.TransformVector(hookOffset), transform.position + (horizontalVel * hookVeclocityOffsetMultipler) + transform.TransformVector(hookOffset) + (leftDirection.normalized * hookDistance));
 
         if (kayak != null) {
             Gizmos.color = Color.cyan;
             Gizmos.DrawLine(transform.position, kayak.Velocity.normalized * 5);
         }
 
+        #if USE_DOUBLE_HOOK
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(rightHookPoint, 0.5f);
         Gizmos.DrawWireSphere(leftHookPoint, 0.5f);
+        #else
+        Gizmos.DrawWireSphere(mainHookPoint, hookDisengageRadius);
+        #endif
     }
     #endif
 }

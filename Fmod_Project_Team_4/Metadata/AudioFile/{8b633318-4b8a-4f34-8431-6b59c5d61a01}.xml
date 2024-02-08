@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{8b633318-4b8a-4f34-8431-6b59c5d61a01}">
+		<property name="assetPath">
+			<value>Kayak/GH active(loopable).wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>15.08475</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{5992255f-b7ea-4b60-a666-f12f01f12335}</destination>
+		</relationship>
+	</object>
+</objects>

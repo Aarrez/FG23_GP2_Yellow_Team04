@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d22c7c1e-f58d-4037-99c7-b6f790283b9c}">
+		<property name="assetPath">
+			<value>Kayak/Paddling.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.76339583333333338</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{5992255f-b7ea-4b60-a666-f12f01f12335}</destination>
+		</relationship>
+	</object>
+</objects>

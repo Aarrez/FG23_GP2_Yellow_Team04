@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 35.8
   speedBoost: 36.4
-  boostForce: 37
-  boostDuration: 37
+  boostForce: 20.3
+  boostDuration: 0.5
   paddleStrength: 0
-  rotationStrength: 0
+  rotationStrength: 5
   lateralStrength: 0

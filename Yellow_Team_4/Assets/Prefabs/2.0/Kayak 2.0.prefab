@@ -17,9 +17,11 @@ GameObject:
   - component: {fileID: 6698830623141257659}
   - component: {fileID: 1819456599583496562}
   - component: {fileID: 5354343333850089519}
-  m_Layer: 0
+  - component: {fileID: 399881250373618250}
+  - component: {fileID: 4309708434961341002}
+  m_Layer: 6
   m_Name: Kayak 2.0
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,7 +39,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8076664578488921359}
+  - {fileID: 1219865998404394878}
   - {fileID: 2155667260198963345}
   - {fileID: 6684586086304631586}
   m_Father: {fileID: 0}
@@ -131,12 +133,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74c50262c029d6d47a5190333f64a50f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paddleStrength: 6
-  rotationStrength: -15
+  paddleStrength: 1000
+  rotationStrength: -1000
   lateralStrength: 10
   paddleForceApplicationTimer: 0.1
   leftPaddleActive: 0
   rightPaddleActive: 0
+  currentRotationStrength: 0
+  paddleTimerInSeconds: -1
 --- !u!136 &7033957893033447755
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -159,7 +163,7 @@ CapsuleCollider:
   m_Radius: 0.29
   m_Height: 3.87
   m_Direction: 2
-  m_Center: {x: 0, y: 0.15, z: 0}
+  m_Center: {x: 0, y: 0.24, z: 0}
 --- !u!114 &6698830623141257659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,7 +182,9 @@ MonoBehaviour:
   direction: 0.6
   hookOffset: {x: 0, y: 0, z: 0.85}
   hookDistance: 50
-  hookStrength: 20
+  hookStrength: 1000
+  hookDisengageRadius: 5
+  hookVeclocityOffsetMultipler: 0
   currentState: 0
 --- !u!114 &1819456599583496562
 MonoBehaviour:
@@ -205,10 +211,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b35798242cca54cb8e614ee56f08a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHorizontalVelocity: 10
+  maxHorizontalVelocity: 9
   maxVerticalVelocity: 5
-  maxLateralTorque: 5
+  maxLateralTorque: 1.6
+  wallNudgeMultiplier: 25
+  controlsUIPrefab: {fileID: 2111128876274178351, guid: 2a59547cba3ddc84584e88c4c2ab4cc0, type: 3}
+  kayakLowMeshRenderer: {fileID: 7441149579289968222}
   IsGrounded: 0
+--- !u!114 &399881250373618250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598889457365156075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c37fedce32af56418b159a4cab94499, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coins: 0
+--- !u!114 &4309708434961341002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2598889457365156075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb5fc98ceb0583b40b77a68150c98106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalMeasuredTime: 0
 --- !u!1 &6509350063885187284
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,14 +516,54 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &9011088155398635414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1219865998404394878}
+  m_Layer: 0
+  m_Name: Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1219865998404394878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9011088155398635414}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8076664578488921359}
+  m_Father: {fileID: 4014319838862409929}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8618951636342180580
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4014319838862409929}
+    m_TransformParent: {fileID: 1219865998404394878}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 23cf9534cab51f140bd6d565a6467c42, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.009999999
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 23cf9534cab51f140bd6d565a6467c42, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.009999999
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 23cf9534cab51f140bd6d565a6467c42, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -511,7 +586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 23cf9534cab51f140bd6d565a6467c42, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 23cf9534cab51f140bd6d565a6467c42, type: 3}
       propertyPath: m_LocalRotation.z
@@ -538,6 +613,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23cf9534cab51f140bd6d565a6467c42, type: 3}
+--- !u!23 &7441149579289968222 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1213980439259296954, guid: 23cf9534cab51f140bd6d565a6467c42, type: 3}
+  m_PrefabInstance: {fileID: 8618951636342180580}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8076664578488921359 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 23cf9534cab51f140bd6d565a6467c42, type: 3}

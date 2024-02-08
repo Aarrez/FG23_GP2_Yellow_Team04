@@ -25,7 +25,7 @@ public class PauseMenu : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
-        GameManager.instance.UpdateGameState(GameManager.gameState.mainmenuState);
+        GameManager.instance.UpdateGameState(GameManager.gameState.loadingState);
     }
 
     public void Restart()

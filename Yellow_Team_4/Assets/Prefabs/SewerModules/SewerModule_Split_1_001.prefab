@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -28
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18,23 +18,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 46
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071079
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.70710576
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -42,12 +42,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c9501bc2ca49be448ac6e063f40a7d29, type: 2}
     - target: {fileID: 919132149155446097, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_Name
       value: SewerModule_Split_1_001
@@ -55,6 +59,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -107,7 +119,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 7786489664227949360, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
+  m_Mesh: {fileID: 3162810844379960708, guid: b74b185d15254ba4e95060ae8709b30f, type: 3}
 --- !u!1001 &5271304467716593346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -159,6 +171,14 @@ PrefabInstance:
     - target: {fileID: 2078360021381029883, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
       propertyPath: m_Name
       value: Water (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2078360021381029883, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900882730858636834, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -222,6 +242,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2078360021381029883, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900882730858636834, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -284,6 +312,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2078360021381029883, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900882730858636834, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -345,6 +381,14 @@ PrefabInstance:
     - target: {fileID: 2078360021381029883, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
       propertyPath: m_Name
       value: Water
+      objectReference: {fileID: 0}
+    - target: {fileID: 2078360021381029883, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900882730858636834, guid: 19e86bc48ff939a419abbfc3472a37da, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

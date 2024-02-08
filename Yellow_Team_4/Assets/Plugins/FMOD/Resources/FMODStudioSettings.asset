@@ -515,7 +515,8 @@ MonoBehaviour:
   RealChannelSettings: []
   Plugins: []
   MasterBanks:
-  - Master
+  - Fabio
+  - Desktop/Fabio
   Banks: []
   BanksToLoad: []
   LiveUpdatePort: 9264

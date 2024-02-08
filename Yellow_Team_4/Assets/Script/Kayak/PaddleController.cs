@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class PaddleController : MonoBehaviour, IKayakEntity
 {
     [Header("Paddle")]
-    [SerializeField] private float paddleStrength = 10f;
-    [SerializeField] private float rotationStrength = 5f;
+    [SerializeField] public float paddleStrength = 10f;
+    [SerializeField] public float rotationStrength = 5f;
     [SerializeField] private float lateralStrength = 2f; 
     [SerializeField] private float paddleForceApplicationTimer = 0.1f;   
         
@@ -15,9 +15,9 @@ public class PaddleController : MonoBehaviour, IKayakEntity
     public bool rightPaddleActive = false;
 
     private Kayak kayak;
-    private float currentRotationStrength;    
+    public float currentRotationStrength;    
 
-    private float paddleTimerInSeconds = -1;
+    public float paddleTimerInSeconds = -1;    
 
     void OnCollisionExit(Collision collisionInfo) {
         if (collisionInfo.gameObject.tag == "Wall") {
@@ -79,22 +79,22 @@ public class PaddleController : MonoBehaviour, IKayakEntity
         if (leftPaddleActive)
         {
             // Debug.Log("left paddle");
-            ApplyPaddleForce(transform.forward * paddleStrength + transform.right * lateralStrength, -currentRotationStrength);
+            ApplyPaddleForce(transform.forward * paddleStrength + transform.right * lateralStrength, dt, -currentRotationStrength);
             // leftPaddleActive = false;
         }
         if (rightPaddleActive)
         {
             // Debug.Log("right paddle");
-            ApplyPaddleForce(transform.forward * paddleStrength - transform.right * lateralStrength, currentRotationStrength);
+            ApplyPaddleForce(transform.forward * paddleStrength - transform.right * lateralStrength, dt, currentRotationStrength);
             // rightPaddleActive = false;
         }
     }
 
-    private void ApplyPaddleForce(Vector3 force, float rotation)
+    private void ApplyPaddleForce(Vector3 force, float dt, float rotation)
     {
         if (kayak != null) {
-            kayak.AddForce(force.normalized, force.magnitude, ForceMode.Force);                            
-            kayak.AddTorque(new Vector3(0f, rotation, 0f), ForceMode.Force);
+            kayak.AddForce(force.normalized, force.magnitude, dt, ForceMode.Force);                            
+            kayak.AddTorque(new Vector3(0f, rotation, 0f), dt, ForceMode.Force);
         } else {
             Debug.LogError("Kayak script is missing. Please add that script in");            
         }

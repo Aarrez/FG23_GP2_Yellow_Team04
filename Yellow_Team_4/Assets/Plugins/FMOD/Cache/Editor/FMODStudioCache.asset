@@ -20,7 +20,34 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1574
   Exists: 1
---- !u!114 &-6046500074485751089
+--- !u!114 &-6985839703117265395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/Ambience
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/Ambience
+  Guid:
+    Data1: 131806365
+    Data2: 1195835582
+    Data3: 1727483531
+    Data4: 1083442617
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 90112
+--- !u!114 &-5973223161925189949
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -30,15 +57,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Name: bank:/Fabio.bank
   m_EditorClassIdentifier: 
-  Path: ../Fmod_Project_Team_4/Build/Desktop/Master.bank
-  Name: Master
-  StudioPath: bank:/Master
-  lastModified: 638417842066888789
+  Path: ../Fmod_Project_Team_4/Build/Desktop/Fabio.bank
+  Name: Fabio
+  StudioPath: bank:/Fabio
+  lastModified: 638430002285168426
   FileSizes:
   - Name: Desktop
-    Value: 1574
+    Value: 1409728
   Exists: 1
 --- !u!114 &-531275259247450851
 MonoBehaviour:
@@ -60,26 +87,6 @@ MonoBehaviour:
   - Name: Desktop
     Value: 754
   Exists: 1
---- !u!114 &-50172698273261203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.strings.bank
-  m_EditorClassIdentifier: 
-  Path: ../Fmod_Project_Team_4/Build/Desktop/Master.strings.bank
-  Name: Master.strings
-  StudioPath: bank:/Master.strings
-  lastModified: 638417842066899113
-  FileSizes:
-  - Name: Desktop
-    Value: 754
-  Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,16 +100,17 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: -50172698273261203}
-  - {fileID: -6046500074485751089}
+  - {fileID: 4814853651493147076}
+  - {fileID: -5973223161925189949}
   EditorEvents:
-  - {fileID: 4971047139812799216}
+  - {fileID: 7075160725416611653}
+  - {fileID: -6985839703117265395}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -6046500074485751089}
+  - {fileID: -5973223161925189949}
   StringsBanks:
-  - {fileID: -50172698273261203}
-  cacheTime: 638417842066899113
+  - {fileID: 4814853651493147076}
+  cacheTime: 638430002285182572
   cacheVersion: 131609
 --- !u!114 &2143799286208740084
 MonoBehaviour:
@@ -131,7 +139,27 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &4971047139812799216
+--- !u!114 &4814853651493147076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Fabio.strings.bank
+  m_EditorClassIdentifier: 
+  Path: ../Fmod_Project_Team_4/Build/Desktop/Fabio.strings.bank
+  Name: Fabio.strings
+  StudioPath: bank:/Fabio.strings
+  lastModified: 638430002285182572
+  FileSizes:
+  - Name: Desktop
+    Value: 846
+  Exists: 1
+--- !u!114 &7075160725416611653
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,20 +169,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Test
+  m_Name: event:/Background noises/Unidentified object
   m_EditorClassIdentifier: 
-  Path: event:/Test
+  Path: event:/Background noises/Unidentified object
   Guid:
-    Data1: 2039443729
-    Data2: 1125972396
-    Data3: -560850244
-    Data4: 433185807
+    Data1: -1490870910
+    Data2: 1098871057
+    Data3: 508580486
+    Data4: -1572206356
   Banks:
-  - {fileID: -6046500074485751089}
-  IsStream: 0
-  Is3D: 0
+  - {fileID: -5973223161925189949}
+  IsStream: 1
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 10451

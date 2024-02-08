@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 676386036069784007}
   - component: {fileID: 5387309899700509869}
   - component: {fileID: 1433906492040873601}
-  - component: {fileID: 3288381722099298733}
+  - component: {fileID: 24820422135531508}
   m_Layer: 4
   m_Name: WaterPlane
   m_TagString: Untagged
@@ -51,7 +51,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 818684009990447939}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -113,7 +113,7 @@ MonoBehaviour:
   amplitude: 0.12
   frequency: 40
   speed: 2.27
---- !u!64 &3288381722099298733
+--- !u!64 &24820422135531508
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
