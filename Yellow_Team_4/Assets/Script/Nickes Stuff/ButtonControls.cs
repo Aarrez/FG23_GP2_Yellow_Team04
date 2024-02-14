@@ -39,16 +39,5 @@ public class ButtonControls : MonoBehaviour
     }
     public ControlButton RightPlayerDuck {
         get { return rightPlayerDuck; }
-    }    
-
-    /*void Awake() {
-        leftPlayerPaddle = transform.Find("LeftPlayer/Paddle").GetComponent<Button>();
-        leftPlayerHook = transform.Find("LeftPlayer/Hook").GetComponent<Button>();
-        leftPlayerDuck = transform.Find("LeftPlayer/Duck").GetComponent<Button>();
-
-        rightPlayerPaddle = transform.Find("RightPlayer/Paddle").GetComponent<Button>();
-        rightPlayerHook = transform.Find("RightPlayer/Hook").GetComponent<Button>();
-        rightPlayerDuck = transform.Find("RightPlayer/Duck").GetComponent<Button>();        
-    }
-    */    
+    }            
 }

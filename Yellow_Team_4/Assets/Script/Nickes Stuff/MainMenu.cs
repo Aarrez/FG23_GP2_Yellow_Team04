@@ -1,4 +1,8 @@
+
+using System.Collections.Generic;
+using System.Linq;
 using GlobalStructs;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +11,17 @@ public class MainMenu : MonoBehaviour
 {
    //This script will mainly hold public voids
    //To use for the main menu buttons
-   private SoundVolume soundVolume;
+   private static SoundVolume soundVolume;
+   public int totalstars = new int();
+   public int totalcoins = new int();
+   public TextMeshProUGUI starsTxt;
+   public TextMeshProUGUI moneyTxt;
+
+   public void Initialize()
+   {
+      GameManager.onGameStateChanged += DisplayStars;
+   }
+
    public void StartGame(int index)
    {
       SceneManager.LoadScene(index);
@@ -24,6 +38,41 @@ public class MainMenu : MonoBehaviour
       else
       {
          GameManager.instance.UpdateGameState(GameManager.gameState.mainmenuState);
+      }
+   }
+
+   void DisplayStars(GameManager.gameState state)
+   {
+      totalstars = 0;
+      foreach (var level in  UserDataManager.upd.GetUserData().LevelData)
+      {
+         int temp = 0;
+         for (int i = 0; i < level.Value.Count; i++)
+         {
+            if (level.Value[i].Starts == StarsEarned.Three)
+            {
+               temp = 3;
+               break;
+            }
+            else if (level.Value[i].Starts == StarsEarned.Two)
+            {
+               temp = 2;
+               continue;
+            }
+            else if (level.Value[i].Starts == StarsEarned.One)
+            {
+               if (temp < 2)
+               {
+                  temp = 1;  
+               }
+               continue;
+            }
+            else if (level.Value[i].Starts == StarsEarned.Zero)
+            {
+               continue;
+            }
+         }
+         totalstars += temp;
       }
    }
 
@@ -57,30 +106,40 @@ public class MainMenu : MonoBehaviour
       GameManager.instance.UpdateGameState(GameManager.gameState.mainmenuState);
    }
 
-   public void SetSFXVolume(float volume)
+   public static void SetSFXVolume(float volume)
    {
-      AudioManager.instance.masterMixer.SetFloat("SFX", Mathf.Log10(volume)*20);
-      soundVolume.Sfx = volume;
+      // AudioManager.instance.masterMixer.SetFloat("SFX", Mathf.Log10(volume)*20);
+      FAudioMan.instance.SFXVolume = volume;      
+      soundVolume.Sfx = 1 -volume; // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
       UserDataManager.SetSavedVolume.Invoke(soundVolume);
    }
-   public void SetMasterVolume(float volume)
+   public static void SetMasterVolume(float volume)
    {
-      AudioManager.instance.masterMixer.SetFloat("master", Mathf.Log10(volume)*20);
-      soundVolume.Master = volume;
+      // AudioManager.instance.masterMixer.SetFloat("master", Mathf.Log10(volume)*20);
+      FAudioMan.instance.masterVolume = volume;
+      soundVolume.Master = 1- volume; // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
       UserDataManager.SetSavedVolume.Invoke(soundVolume);
    }
-   public void SetMusicVolume(float volume)
+   public static void SetMusicVolume(float volume)
    {
-      AudioManager.instance.masterMixer.SetFloat("music", Mathf.Log10(volume)*20);
-      soundVolume.Music = volume;
+      // AudioManager.instance.masterMixer.SetFloat("music", Mathf.Log10(volume)*20);
+      FAudioMan.instance.musicVolume = volume;
+      soundVolume.Music = 1-volume; // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
       UserDataManager.SetSavedVolume.Invoke(soundVolume);
    }
 
    private void Start()
    {
       soundVolume = UserDataManager.GetSavedVolume.Invoke();
-      SetSFXVolume(soundVolume.Sfx);
-      SetMusicVolume(soundVolume.Music);
-      SetMasterVolume(soundVolume.Master);
+      SetSFXVolume(1-soundVolume.Sfx); // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
+      SetMusicVolume(1-soundVolume.Music); // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
+      SetMasterVolume(1-soundVolume.Master); // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
+   }
+
+   private void Update()
+   {
+      totalcoins = UserDataManager.upd.GetUserData().CurrentCurrency;
+      starsTxt.text = totalstars.ToString();
+      moneyTxt.text = totalcoins.ToString();
    }
 }

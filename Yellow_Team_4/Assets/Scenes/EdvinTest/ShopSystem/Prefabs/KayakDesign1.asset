@@ -15,4 +15,5 @@ MonoBehaviour:
   title: Skull Kayak
   description: Metal AF
   baseCost: 20
-  starsAmount: 3
+  starsAmount: 0
+  LinkedItemData: {fileID: 11400000, guid: 21467c4e1cec3cd43974299aa28bf3a8, type: 2}

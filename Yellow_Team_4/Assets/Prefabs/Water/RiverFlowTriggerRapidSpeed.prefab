@@ -67,4 +67,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength: 160
-  maxRiverStrength: 12
+  maxRiverStrength: 10

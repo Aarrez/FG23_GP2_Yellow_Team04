@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8821225151087734660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Menu/Select
+  m_EditorClassIdentifier: 
+  Path: event:/Menu/Select
+  Guid:
+    Data1: -646572118
+    Data2: 1313833310
+    Data3: 685581441
+    Data4: -851882501
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 136
 --- !u!114 &-7679950076683639496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20,33 +47,6 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1574
   Exists: 1
---- !u!114 &-6985839703117265395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Ambience/Ambience
-  m_EditorClassIdentifier: 
-  Path: event:/Ambience/Ambience
-  Guid:
-    Data1: 131806365
-    Data2: 1195835582
-    Data3: 1727483531
-    Data4: 1083442617
-  Banks:
-  - {fileID: -5973223161925189949}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 90112
 --- !u!114 &-5973223161925189949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,11 +62,65 @@ MonoBehaviour:
   Path: ../Fmod_Project_Team_4/Build/Desktop/Fabio.bank
   Name: Fabio
   StudioPath: bank:/Fabio
-  lastModified: 638430002285168426
+  lastModified: 638435100396356590
   FileSizes:
   - Name: Desktop
-    Value: 1409728
+    Value: 5219648
   Exists: 1
+--- !u!114 &-3498232150729298765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Menu/Back
+  m_EditorClassIdentifier: 
+  Path: event:/Menu/Back
+  Guid:
+    Data1: -455605296
+    Data2: 1341738025
+    Data3: -558093946
+    Data4: 1404822194
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 155
+--- !u!114 &-705033193704660985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Level/LevelAmbience
+  m_EditorClassIdentifier: 
+  Path: event:/Level/LevelAmbience
+  Guid:
+    Data1: 131806365
+    Data2: 1195835582
+    Data3: 1727483531
+    Data4: 1083442617
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 90112
 --- !u!114 &-531275259247450851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,14 +158,131 @@ MonoBehaviour:
   - {fileID: -5973223161925189949}
   EditorEvents:
   - {fileID: 7075160725416611653}
-  - {fileID: -6985839703117265395}
+  - {fileID: 1084775157676774294}
+  - {fileID: 1917663462611167614}
+  - {fileID: 8084822076423194240}
+  - {fileID: -8821225151087734660}
+  - {fileID: -3498232150729298765}
+  - {fileID: 7874290639267648160}
+  - {fileID: 1666024729053139674}
+  - {fileID: 5112447089512379955}
+  - {fileID: -705033193704660985}
+  - {fileID: 5291763180216728}
   EditorParameters: []
   MasterBanks:
   - {fileID: -5973223161925189949}
   StringsBanks:
   - {fileID: 4814853651493147076}
-  cacheTime: 638430002285182572
+  cacheTime: 638435100396381551
   cacheVersion: 131609
+--- !u!114 &5291763180216728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Level/LevelMusic
+  m_EditorClassIdentifier: 
+  Path: event:/Level/LevelMusic
+  Guid:
+    Data1: 349848231
+    Data2: 1194919657
+    Data3: 384593585
+    Data4: 1303737451
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 125500
+--- !u!114 &1084775157676774294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Background noises/duck
+  m_EditorClassIdentifier: 
+  Path: event:/Background noises/duck
+  Guid:
+    Data1: 2020810841
+    Data2: 1251943389
+    Data3: -1541391965
+    Data4: 314932403
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 712
+--- !u!114 &1666024729053139674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Background noises/coinsPickup
+  m_EditorClassIdentifier: 
+  Path: event:/Background noises/coinsPickup
+  Guid:
+    Data1: 351545851
+    Data2: 1120322052
+    Data3: 1042939319
+    Data4: 1659450231
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
+--- !u!114 &1917663462611167614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Kayak/Hit Stone
+  m_EditorClassIdentifier: 
+  Path: event:/Kayak/Hit Stone
+  Guid:
+    Data1: 1429522569
+    Data2: 1081617148
+    Data3: -1491828043
+    Data4: -1921965859
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &2143799286208740084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,11 +325,38 @@ MonoBehaviour:
   Path: ../Fmod_Project_Team_4/Build/Desktop/Fabio.strings.bank
   Name: Fabio.strings
   StudioPath: bank:/Fabio.strings
-  lastModified: 638430002285182572
+  lastModified: 638435100396381551
   FileSizes:
   - Name: Desktop
-    Value: 846
+    Value: 1330
   Exists: 1
+--- !u!114 &5112447089512379955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Menu/MenuMusic
+  m_EditorClassIdentifier: 
+  Path: event:/Menu/MenuMusic
+  Guid:
+    Data1: 1314925094
+    Data2: 1084842752
+    Data3: 1524571838
+    Data4: -916681040
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 42000
 --- !u!114 &7075160725416611653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,3 +384,57 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 10451
+--- !u!114 &7874290639267648160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Kayak/Paddling
+  m_EditorClassIdentifier: 
+  Path: event:/Kayak/Paddling
+  Guid:
+    Data1: 829123539
+    Data2: 1091146538
+    Data3: 698421682
+    Data4: -2111230988
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1000
+--- !u!114 &8084822076423194240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Kayak/Hit Pipe
+  m_EditorClassIdentifier: 
+  Path: event:/Kayak/Hit Pipe
+  Guid:
+    Data1: 467407780
+    Data2: 1189620138
+    Data3: -842714450
+    Data4: 1572908642
+  Banks:
+  - {fileID: -5973223161925189949}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1500

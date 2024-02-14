@@ -516,7 +516,6 @@ MonoBehaviour:
   Plugins: []
   MasterBanks:
   - Fabio
-  - Desktop/Fabio
   Banks: []
   BanksToLoad: []
   LiveUpdatePort: 9264

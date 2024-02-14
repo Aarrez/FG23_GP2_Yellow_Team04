@@ -522,6 +522,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SewerModule_Split_1_002
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2ac7c552ff1a92d46a87118a1aa474e2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2ac7c552ff1a92d46a87118a1aa474e2, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2ac7c552ff1a92d46a87118a1aa474e2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -535,6 +547,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2ac7c552ff1a92d46a87118a1aa474e2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8704851922405608632}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2ac7c552ff1a92d46a87118a1aa474e2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 350097074017034903}
   m_SourcePrefab: {fileID: 100100000, guid: 2ac7c552ff1a92d46a87118a1aa474e2, type: 3}
 --- !u!1 &70403909099318235 stripped
 GameObject:
@@ -563,6 +578,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6778886394897974755, guid: 2ac7c552ff1a92d46a87118a1aa474e2, type: 3}
+--- !u!114 &350097074017034903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70403909099318235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1429522569
+      Data2: 1081617148
+      Data3: -1491828043
+      Data4: -1921965859
+    Path: event:/Kayak/Hit Stone
+  Event: 
+  PlayEvent: 7
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &842682581657432417 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2ac7c552ff1a92d46a87118a1aa474e2, type: 3}

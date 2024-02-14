@@ -6,16 +6,18 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Object = System.Object;
+using TMPro;
 
 public class InventoryMenu : MonoBehaviour
 {
     [SerializeField] private GameObject kayakIvMenuHolder;
     [SerializeField] private GameObject playerIvMenuHolder;
+    private AssetData inventoryData;
     private List<GameObject> spawnedIcons;
     public Material kayakMat;
     public Material playerMat;
     private Kayak kayak;
-    public void Start()
+    public void Initialize()
     {
         InventorySystem.instance.newItem += UpdateMenu;
         spawnedIcons = new List<GameObject>();
@@ -24,11 +26,11 @@ public class InventoryMenu : MonoBehaviour
         {
             if (spawnedIcons[i].GetComponent<IvDataHolder>().refData.type == ItemType.KayakTexture)
             {
-                kayakMat = spawnedIcons[i].GetComponent<IvDataHolder>().refData.material;
+                //kayakMat = spawnedIcons[i].GetComponent<IvDataHolder>().refData.material;
             }
             if (spawnedIcons[i].GetComponent<IvDataHolder>().refData.type == ItemType.PlayerTexture)
             {
-                playerMat = spawnedIcons[i].GetComponent<IvDataHolder>().refData.material;
+                //playerMat = spawnedIcons[i].GetComponent<IvDataHolder>().refData.material;
             }
         }
     }
@@ -65,8 +67,9 @@ public class InventoryMenu : MonoBehaviour
         //create the menu icon
         GameObject icon = Instantiate((GameObject)Resources.Load("Item"), parent);
         var im = icon.transform.GetChild(0);
-        Image image = im.GetComponent<Image>();
-        image.sprite = item.icon;
+        var txt = icon.transform.GetChild(1);
+        TextMeshProUGUI text = txt.GetComponent<TextMeshProUGUI>();
+        text.text = item.name;
         icon.GetComponent<IvDataHolder>().refData = item;
         icon.GetComponent<Button>().onClick.AddListener(ApplyCustomization);
         spawnedIcons.Add(icon);
@@ -89,7 +92,7 @@ public class InventoryMenu : MonoBehaviour
                     else if (data.type == ItemType.PlayerTexture)
                     {
                         Debug.Log("Changing Player Texture");
-                        playerMat = data.material;
+                        //playerMat = data.material;
                     }
                 }
             }

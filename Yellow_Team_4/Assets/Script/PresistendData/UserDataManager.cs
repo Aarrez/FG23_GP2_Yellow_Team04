@@ -9,37 +9,49 @@ public class UserDataManager : MonoBehaviour
     public static UnityAction<int, LevelCompleteStats> LevelComplete;
     public static Func<SoundVolume> GetSavedVolume;
     public static Action<SoundVolume> SetSavedVolume;
-    public static UnityAction<InventoryItem> AddInvetoryItem;
     public static UnityAction<string> ChangeName;
+    public static UnityAction InstantiateData;
 
-    [SerializeField] private int levelAmount = 5;
+    [SerializeField] private string defaultNameFallback = "newUser";
     
-    private UserPresistentData<InventoryItem, PlayerSettings, LevelCompleteStats> upd;
-    
+    public static UserPresistentData<SerializeableItem, SerializeableItem, SoundVolume, LevelCompleteStats> upd;
+
     private void Awake()
     {
+        InstatiateUpd();
+    }
+
+    public static void InstatiateUpd()
+    {
+        if (upd != null) return;
         string path = Application.persistentDataPath + "/UserData.json";
-        upd = new UserPresistentData<InventoryItem, PlayerSettings, LevelCompleteStats>(path, levelAmount);
+        upd = new UserPresistentData<SerializeableItem, SerializeableItem, SoundVolume, LevelCompleteStats>(path);
     }
 
     private void OnEnable()
     {
+        LeaderBoardManager.GetName += () =>
+        {
+            if (upd == null)
+            {
+                return defaultNameFallback;
+            }
+            return upd.defaultData.userName;
+        };
         LevelComplete += CompletedLevel;
         GetSavedVolume += GetSavedVolumeMethod;
         SetSavedVolume += ChangeSavedVolumeMethod;
         ChangeName += ChangeTheUserName;
-        AddInvetoryItem += item => upd.ChangeUserData(item);
-        LeaderBoardManager.GetName += () => upd.GetUserData().userName;
     }
     
     private void OnDisable()
     {
+        LeaderBoardManager.GetName -= () => upd.GetUserData().userName;
         LevelComplete -= CompletedLevel;
         GetSavedVolume -= GetSavedVolumeMethod;
         SetSavedVolume -= ChangeSavedVolumeMethod;
         ChangeName -= ChangeTheUserName;
-        AddInvetoryItem -= item => upd.ChangeUserData(item);
-        LeaderBoardManager.GetName -= () => upd.GetUserData().userName;
+        
     }
 
 
@@ -66,14 +78,14 @@ public class UserDataManager : MonoBehaviour
     private void ChangeSavedVolumeMethod(SoundVolume sv)
     {
         var userdata = upd.GetUserData();
-        userdata.playerSettings.soundVolume = sv;
+        userdata.volumeSettings = sv;
         upd.ChangeUserData(userdata);
     }
 
     private SoundVolume GetSavedVolumeMethod()
     {
         var userdata = upd.GetUserData();
-        return userdata.playerSettings.soundVolume;
+        return userdata.volumeSettings;
     }
 
     public void ChangeTheUserName(string userName)

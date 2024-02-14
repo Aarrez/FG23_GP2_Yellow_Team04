@@ -15,5 +15,4 @@ MonoBehaviour:
   id: 2
   name: Default
   type: 0
-  icon: {fileID: 21300000, guid: 568df9bd89a3a6e4ab7d290dbe811221, type: 3}
   material: {fileID: 2100000, guid: a286643400f783545904e40058d9e8bd, type: 2}

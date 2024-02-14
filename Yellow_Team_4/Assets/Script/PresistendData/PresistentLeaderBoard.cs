@@ -8,9 +8,8 @@ using Newtonsoft.Json;
 
 namespace PresistentData
 {
-    
     [Serializable]
-    public class PresistentLeaderBoard
+    public class DeprecatedPresistentLeaderBoard
     {
     public string[] StringLines = Array.Empty<string>();
     private string jsonPath;
@@ -19,7 +18,7 @@ namespace PresistentData
     private int dscore = 12;
     private float dtime = 3.14f;
 
-    public PresistentLeaderBoard(string jsonPath)
+    public DeprecatedPresistentLeaderBoard(string jsonPath)
     {
         this.jsonPath = jsonPath;
         if (File.Exists(jsonPath))

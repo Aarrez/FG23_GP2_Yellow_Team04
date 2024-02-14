@@ -1,26 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class ShopManager : MonoBehaviour
 {
-    public int coins;
-    public int stars;
+    [SerializeField]private int coins;
+    [SerializeField] private int stars;
     public TMP_Text coinUI;
     public TMP_Text starUI;
-    public TMP_Text starCostUI;
 
     public ShopItemSO[] shopItemsSO;
     public GameObject[] shopPanelsGO;
     public ShopTemplate[] shopPanels;
     public Button[] myPurchaseBtns;
+    [SerializeField] private MainMenu mainmenu;
 
     public GameObject[] lockedScreens;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        coins = new int();
+        stars = new int();
+        GameManager.onGameStateChanged += GiveCoins;
+    }
+
     void Start()
     {
+        coins = mainmenu.totalcoins;
+        stars = mainmenu.totalstars;
         for (int i = 0; i < shopItemsSO.Length; i++)
         {
             shopPanelsGO[i].SetActive(true);
@@ -30,13 +41,6 @@ public class ShopManager : MonoBehaviour
         LoadPanels();
         CheckPurchaseable();
         DeactivateLockScreen();
-    }
-
-    public void AddCoins()
-    {
-        coins++;
-        coinUI.text = "Coins: " + coins.ToString();
-        CheckPurchaseable();
     }
 
     public void CheckPurchaseable()
@@ -51,15 +55,26 @@ public class ShopManager : MonoBehaviour
             {
                 myPurchaseBtns[i].interactable = false;
             }
+
+            for (int j = 0; j < shopItemsSO.Length; j++)
+            {
+                if (InventorySystem.instance.kayakinventory.Contains(shopItemsSO[i].LinkedItemData))
+                {
+                    myPurchaseBtns[i].interactable = false;
+                }   
+            }
+
         }
+        DeactivateLockScreen();
     }
 
     public void PurchaseItem(int btnNo)
     {
         if (coins >= shopItemsSO[btnNo].baseCost)
         {
-            coins = coins - shopItemsSO[btnNo].baseCost;
-            coinUI.text = "Coins: " + coins.ToString();
+            var tempUpd = UserDataManager.upd.GetUserData();
+            tempUpd.CurrentCurrency -= shopItemsSO[btnNo].baseCost;
+            UserDataManager.upd.ChangeUserData(tempUpd.CurrentCurrency);
             CheckPurchaseable();
         }
     }
@@ -83,6 +98,27 @@ public class ShopManager : MonoBehaviour
             {
                 lockedScreens[i].SetActive(false);
             }
+            else
+            {
+                lockedScreens[i].SetActive(true);
+            }
         }
+    }
+
+    
+    void GiveCoins(GameManager.gameState state)
+    {
+        if (state == GameManager.gameState.storeState)
+        {
+            CheckPurchaseable();   
+        }
+    }
+    
+
+    private void Update()
+    {
+        coins = mainmenu.totalcoins;
+        stars = mainmenu.totalstars;
+        coinUI.text = "Coins: " + coins.ToString();
     }
 }

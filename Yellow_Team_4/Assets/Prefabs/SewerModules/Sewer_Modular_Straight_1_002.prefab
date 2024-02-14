@@ -48,9 +48,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c9501bc2ca49be448ac6e063f40a7d29, type: 2}
     - target: {fileID: 919132149155446097, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
       propertyPath: m_Name
       value: Sewer_Modular_Straight_1_002
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -62,6 +78,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3337559836358875376}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7734786703221534696}
   m_SourcePrefab: {fileID: 100100000, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
 --- !u!4 &273693224880573061 stripped
 Transform:
@@ -95,6 +114,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6955622240956248884, guid: 373ef3720abb36141ac7f3507f8aa04c, type: 3}
+--- !u!114 &7734786703221534696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614611766428586047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1429522569
+      Data2: 1081617148
+      Data3: -1491828043
+      Data4: -1921965859
+    Path: event:/Kayak/Hit Stone
+  Event: 
+  PlayEvent: 7
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &5068101733832554384
 PrefabInstance:
   m_ObjectHideFlags: 0

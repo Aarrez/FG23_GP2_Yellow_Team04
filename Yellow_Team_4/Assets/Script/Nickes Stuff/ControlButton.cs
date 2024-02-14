@@ -10,6 +10,11 @@ public class ControlButton : Button
     public UnityEvent PointerDown = new();
     public UnityEvent PointerUp = new();
 
+    public Animator animator;
+    public void Awake() {
+        animator = GetComponent<Animator>();
+    }
+
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);

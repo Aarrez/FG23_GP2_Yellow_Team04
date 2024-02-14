@@ -8,4 +8,5 @@ public class ShopItemSO : ScriptableObject
     public string description;
     public int baseCost;
     public int starsAmount;
+    public InventoryItemData LinkedItemData;
 }

@@ -1,49 +1,33 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GlobalStructs;
 using PresistentData;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LeaderBoardManager : MonoBehaviour
 {
-    public static UnityAction<LevelCompleteStats> SaveLeaderboardData;
-    public static Func<string> GetName; 
+    public static Func<string> GetName;
+    public static UnityAction<LevelCompleteStats> LeaderboardLoaded;
     
     [SerializeField] private GameObject slot;
-    private List<GameObject> slotsInstantiated = new();
     private LevelCompleteStats leaderBoardData;
     private Button[] buttons;
     private Button send, read, clear;
-    private PresistentLeaderBoard leaderBoard;
-    private TMPro.TMP_InputField inputName;
     private Toggle completedLevel;
-
-    private RectTransform contentRect;
-    private float slotHeight;
+    private string playerName;
+    private int activeBuildIndex;
     
     private void Awake()
     {
-        string jsonPath = Application.persistentDataPath + "/ScoreBoard.json";
-        leaderBoard = new PresistentLeaderBoard(jsonPath);
-        inputName = GetComponentInChildren<TMPro.TMP_InputField>();
-        contentRect = transform.GetComponent<RectTransform>();
-        //WTF TODO Find out why it gives 350 instead of 50;
-        slotHeight = GetComponent<RectTransform>().rect.size.y - 300.0f;
-        slotHeight /= 2;
+        activeBuildIndex = SceneManager.GetActiveScene().buildIndex;
     }
     
     private void OnEnable()
     {
         ReadLeaderBoard();
-        SaveLeaderboardData += AddLeaderBoardData;
-    }
-
-    private void OnDisable()
-    {
-        SaveLeaderboardData -= AddLeaderBoardData;
     }
 #if UNITY_EDITOR
     private void Update()
@@ -55,47 +39,68 @@ public class LeaderBoardManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            ClearLeaderBoard();
-            ReadLeaderBoard();
+            RemoveDefaults();
         }
-    }
-    private void AddDefaultData()
-    {
-        leaderBoard.SaveData(leaderBoard.DefaultData[0]);
-    }
-    
-    public void ClearLeaderBoard()
-    {
-        leaderBoard.ClearJsonFile();
     }
 #endif
-
-    private void ClearCurrentLeaderBorad()
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Destroy(transform.GetChild(i).gameObject);
-        }
-        slotsInstantiated.Clear();
-    }
     
     private void ReadLeaderBoard()
     {
-        ClearCurrentLeaderBorad();
-        float totalHeight = 0;
-        LevelCompleteStats[] dataset = leaderBoard.GetLeaderBoard();
-        foreach (var d in dataset)
+        List<LevelCompleteStats> dataset;
+        try
         {
-            totalHeight += slotHeight;
-            slotsInstantiated.Add(Instantiate(slot, transform));
-            string text = $"Player: {GetName.Invoke()}, Stars: {((int)d.Starts).ToString()}, Time: {d.Time.ToString()}" ;
-            slotsInstantiated.Last().GetComponentInChildren<TMPro.TMP_Text>().text = text;
+            dataset =
+                UserDataManager.upd.GetUserData().LevelData[activeBuildIndex];
         }
-        contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, totalHeight);
+        catch (Exception e)
+        {
+            UserDataManager.InstatiateUpd();
+            dataset =
+                UserDataManager.upd.GetUserData().LevelData[1];
+        }
+       
+        LeaderboardLoaded?.Invoke(dataset[0]);
+        playerName = GetName?.Invoke();
+        var childComp = transform.GetComponentsInChildren<TMPro.TMP_Text>();
+        for (int i = 0; i < childComp.Length; i++)
+        {
+            if (i >= dataset.Count)
+            {
+                childComp[i].text = "";
+                continue;
+            }
+                
+            string text = $"{playerName}, Stars: {((int)dataset[i].Starts).ToString()}, Time: {dataset[i].Time.ToString()}";
+            childComp[i].text = text;
+        }
+    }
+
+    private void AddDefaultData()
+    {
+        UserDataManager.upd.ChangeUserData(1, UserDataManager.upd.defaultData.LevelData[1][0]);
+    }
+
+    private void RemoveDefaults()
+    {
+        var d = UserDataManager.upd.GetUserData();
+        foreach (var levelScore in d.LevelData)
+        {
+            for (int i = 0; i < levelScore.Value.Count; i++)
+            {
+                if (levelScore.Value[i].Time <= 1)
+                {
+                    levelScore.Value.Remove(levelScore.Value[i]);
+                }
+            }
+        }
+            
+        
+        UserDataManager.upd.SaveData(d);
+                    
     }
 
     private void AddLeaderBoardData(LevelCompleteStats levelStats)
     {
-        leaderBoard.SaveData(levelStats);
+        UserDataManager.upd.ChangeUserData(activeBuildIndex, levelStats);
     }
 }

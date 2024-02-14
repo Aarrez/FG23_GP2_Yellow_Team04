@@ -1,6 +1,5 @@
 using UnityEngine;
 using TestData;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine.Serialization;
 
 public class BoostController : MonoBehaviour, IKayakEntity
@@ -35,8 +34,7 @@ public class BoostController : MonoBehaviour, IKayakEntity
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("BoostAreaTest"))
-        {
-            Debug.Log("Boost area detected!");
+        {            
             StartSpeedBoost();
             boostDirection = other.transform.forward;
         }
@@ -64,8 +62,7 @@ public class BoostController : MonoBehaviour, IKayakEntity
     {
         if (boosting)
         {
-            boostTimer -= Time.deltaTime;
-            Debug.Log(boostTimer);
+            boostTimer -= Time.deltaTime;            
             
             var hits = Physics.OverlapSphere(transform.position, cheatRadius);
             float closestItem = float.MaxValue;

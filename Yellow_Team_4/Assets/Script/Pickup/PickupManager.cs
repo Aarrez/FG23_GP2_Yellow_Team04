@@ -15,7 +15,7 @@ public class PickupManager : MonoBehaviour
 {
     [SerializeField] private PickupData pickupData;
 
-    private List<GameObject> pickupPool = new List<GameObject>();
+    public List<GameObject> pickupPool = new List<GameObject>();
 
     private static PickupManager instance;
 

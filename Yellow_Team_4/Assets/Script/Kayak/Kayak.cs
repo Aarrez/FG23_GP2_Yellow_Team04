@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public interface IKayakEntity {
     void OnUpdate(float dt);
@@ -24,11 +26,16 @@ public class Kayak : MonoBehaviour
     [SerializeField] private float maxHorizontalVelocity = 5;
     [SerializeField] private float maxVerticalVelocity = 5;
     [SerializeField] private float maxLateralTorque = 5;
+    
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem foamEffect;
 
     [Header("Other")]
     [SerializeField] private float wallNudgeMultiplier = 1;
 
     [SerializeField] private GameObject controlsUIPrefab;
+    
+    
     
     private PaddleController paddleController;
     private BoostController boostController;
@@ -49,7 +56,10 @@ public class Kayak : MonoBehaviour
     private Vector3 hitPoint;
     private Vector3 hitDirection;
 
-    public MeshRenderer kayakLowMeshRenderer;
+    public GameObject kayakLow;
+    private MeshRenderer kayakMeshRenderer;
+    private SkinnedMeshRenderer player1MeshRenderer;
+    private SkinnedMeshRenderer player2MeshRenderer;
     private InventoryMenu inventory;
 
     public float MaxHorizontalVelocity {
@@ -73,8 +83,15 @@ public class Kayak : MonoBehaviour
         collectController = GetComponent<CollectController>();
         floaters = GetComponentsInChildren<Floater>();
         inventory = FindObjectOfType<InventoryMenu>();
-        if (inventory != null && inventory.kayakMat != null) {
-            kayakLowMeshRenderer.material = inventory.kayakMat;
+
+        kayakMeshRenderer = kayakLow.transform.GetChild(0).GetComponent<MeshRenderer>();
+        player1MeshRenderer = kayakLow.transform.Find("CharacterLeft/Mesh").GetComponent<SkinnedMeshRenderer>();
+        player2MeshRenderer = kayakLow.transform.Find("CharacterRight/Mesh").GetComponent<SkinnedMeshRenderer>();
+        if (inventory != null && inventory.kayakMat != null)
+        {
+            kayakMeshRenderer.material = inventory.kayakMat;
+            player1MeshRenderer.material = inventory.playerMat;
+            player2MeshRenderer.material = inventory.playerMat;
         }
         
         waterController = FindObjectOfType<WaterController>();
@@ -96,48 +113,29 @@ public class Kayak : MonoBehaviour
 
         controls = FindObjectOfType<ButtonControls>(true);
         if (controls != null) {
-            controls.LeftPlayerHook.PointerDown.AddListener(hookController.OnLeftHookDown);
-            controls.LeftPlayerHook.PointerUp.AddListener(hookController.OnLeftHookUp);
-            controls.RightPlayerHook.PointerDown.AddListener(hookController.OnRightHookDown);
-            controls.RightPlayerHook.PointerUp.AddListener(hookController.OnRightHookUp);
-
-            controls.LeftPlayerLeftPaddle.PointerDown.AddListener(() =>{ paddleController.leftPaddleActive = true; paddleController.paddleTimerInSeconds = 0; });
-            controls.LeftPlayerRightPaddle.PointerDown.AddListener(() =>{ paddleController.rightPaddleActive = true; paddleController.paddleTimerInSeconds = 0; });
-            controls.RightPlayerLeftPaddle.PointerDown.AddListener(() =>{ paddleController.leftPaddleActive = true; paddleController.paddleTimerInSeconds = 0; });
-            controls.RightPlayerRightPaddle.PointerDown.AddListener(() =>{ paddleController.rightPaddleActive = true; paddleController.paddleTimerInSeconds = 0; });
-            
-            #if USE_TAP_AND_HOLD
-            controls.LeftPlayerLeftPaddle.PointerUp.AddListener(() =>{ paddleController.leftPaddleActive = false; });
-            controls.LeftPlayerRightPaddle.PointerUp.AddListener(() =>{ paddleController.rightPaddleActive = false; });
-            controls.RightPlayerLeftPaddle.PointerUp.AddListener(() =>{ paddleController.leftPaddleActive = false; });
-            controls.RightPlayerRightPaddle.PointerUp.AddListener(() =>{ paddleController.rightPaddleActive = false; });
-            #endif
+            RegisterControls(controls);
+            if (SceneManager.GetActiveScene().buildIndex == 1) {
+                controls.LeftPlayerHook.gameObject.SetActive(false);
+                controls.RightPlayerHook.gameObject.SetActive(false);
+            } else {
+                controls.LeftPlayerHook.gameObject.SetActive(true);
+                controls.RightPlayerHook.gameObject.SetActive(true);
+            }
         }
         else
         {
             Canvas c = FindObjectOfType<Canvas>();
             var ui = Instantiate(controlsUIPrefab, c.transform);
 
+            var es = new GameObject("EventSystem");
+            es.AddComponent<EventSystem>();
+            es.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();            
+
             ui.transform.Find("LeftPlayer").GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
             ui.transform.Find("RightPlayer").GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
             
             controls = FindObjectOfType<ButtonControls>(true);
-            controls.LeftPlayerHook.PointerDown.AddListener(hookController.OnLeftHookDown);
-            controls.LeftPlayerHook.PointerUp.AddListener(hookController.OnLeftHookUp);
-            controls.RightPlayerHook.PointerDown.AddListener(hookController.OnRightHookDown);
-            controls.RightPlayerHook.PointerUp.AddListener(hookController.OnRightHookUp);
-
-            controls.LeftPlayerLeftPaddle.PointerDown.AddListener(() =>{ paddleController.leftPaddleActive = true; paddleController.paddleTimerInSeconds = 0; });
-            controls.LeftPlayerRightPaddle.PointerDown.AddListener(() =>{ paddleController.rightPaddleActive = true; paddleController.paddleTimerInSeconds = 0; });
-            controls.RightPlayerLeftPaddle.PointerDown.AddListener(() =>{ paddleController.leftPaddleActive = true; paddleController.paddleTimerInSeconds = 0; });
-            controls.RightPlayerRightPaddle.PointerDown.AddListener(() =>{ paddleController.rightPaddleActive = true; paddleController.paddleTimerInSeconds = 0; });
-            
-            #if USE_TAP_AND_HOLD
-            controls.LeftPlayerLeftPaddle.PointerUp.AddListener(() =>{ paddleController.leftPaddleActive = false; });
-            controls.LeftPlayerRightPaddle.PointerUp.AddListener(() =>{ paddleController.rightPaddleActive = false; });
-            controls.RightPlayerLeftPaddle.PointerUp.AddListener(() =>{ paddleController.leftPaddleActive = false; });
-            controls.RightPlayerRightPaddle.PointerUp.AddListener(() =>{ paddleController.rightPaddleActive = false; });
-            #endif
+            RegisterControls(controls);            
         }
     }
 
@@ -167,8 +165,20 @@ public class Kayak : MonoBehaviour
             if (IsGrounded) {
                 var worldSpaceHeight = waterController.WaveController.GetWaveHeight(transform.position.x);
                 var localSpacePosition = transform.InverseTransformPoint(new Vector3(transform.position.x, worldSpaceHeight, transform.position.z));
-                meshObject.transform.localPosition = localSpacePosition;       
+                meshObject.transform.localPosition = localSpacePosition;
             }
+        }
+        
+        if (rb.velocity.magnitude >= 1 && IsGrounded)
+        {
+            if (!foamEffect.isPlaying)
+            {
+                foamEffect.Play();
+            }
+        }
+        else if(!foamEffect.isStopped)
+        {
+            foamEffect.Stop();
         }
     }
 
@@ -195,6 +205,8 @@ public class Kayak : MonoBehaviour
             hitPoint = c.point;
             hitDirection = c.normal;        
         }
+        
+        
     }
 
     void OnCollisionExit(Collision collision) {
@@ -230,14 +242,13 @@ public class Kayak : MonoBehaviour
     }
 
     public void AddTorque(Vector3 torque, float dt, ForceMode forceMode = ForceMode.Force) {
-        if (rb.angularVelocity.magnitude < maxLateralTorque) {
+        if (torque.magnitude > 0 && rb.angularVelocity.magnitude < maxLateralTorque) {
             rb.AddTorque(torque * dt, forceMode);
         }
     }
 
     public void AddForceAtPosition(Vector3 direction, float strength, Vector3 position, ForceMode forceMode = ForceMode.Force) {
         var horizontalVel = new Vector3(rb.velocity.x, 0, rb.velocity.y);
-        Debug.Log(horizontalVel.magnitude);
         if (horizontalVel.magnitude < maxHorizontalVelocity) {
             rb.AddForceAtPosition(direction * strength, position, forceMode);
         }
@@ -247,6 +258,35 @@ public class Kayak : MonoBehaviour
             rb.AddForceAtPosition(direction * strength, position, forceMode);            
         }
     }   
+
+    private void RegisterControls(ButtonControls controls) {
+        controls.LeftPlayerHook.PointerDown.RemoveAllListeners();
+        controls.LeftPlayerHook.PointerUp.RemoveAllListeners();
+        controls.RightPlayerHook.PointerDown.RemoveAllListeners();
+        controls.RightPlayerHook.PointerUp.RemoveAllListeners();
+
+        controls.LeftPlayerLeftPaddle.PointerDown.RemoveAllListeners();
+        controls.LeftPlayerRightPaddle.PointerDown.RemoveAllListeners();
+        controls.RightPlayerLeftPaddle.PointerDown.RemoveAllListeners();
+        controls.RightPlayerRightPaddle.PointerDown.RemoveAllListeners();
+
+        controls.LeftPlayerHook.PointerDown.AddListener(() => { controls.RightPlayerHook.animator.SetBool("isFlashing", true); hookController.OnLeftHookDown(); });
+        controls.LeftPlayerHook.PointerUp.AddListener(() => { controls.RightPlayerHook.animator.SetBool("isFlashing", false); hookController.OnLeftHookUp(); });
+        controls.RightPlayerHook.PointerDown.AddListener(() => { controls.LeftPlayerHook.animator.SetBool("isFlashing", true); hookController.OnRightHookDown(); });
+        controls.RightPlayerHook.PointerUp.AddListener(() => { controls.LeftPlayerHook.animator.SetBool("isFlashing", false); hookController.OnRightHookUp(); });
+
+        controls.LeftPlayerLeftPaddle.PointerDown.AddListener(() =>{ paddleController.leftCharacterPaddleAnimator?.SetTrigger("PaddleLeft"); paddleController.paddleState = PaddleController.EPaddleState.LEFT_PADDLE; paddleController.leftPaddleTimerInSeconds = 0; });
+        controls.LeftPlayerRightPaddle.PointerDown.AddListener(() =>{ paddleController.leftCharacterPaddleAnimator?.SetTrigger("PaddleRight"); paddleController.paddleState = PaddleController.EPaddleState.RIGHT_PADDLE; paddleController.rightPaddleTimerInSeconds = 0; });
+        controls.RightPlayerLeftPaddle.PointerDown.AddListener(() =>{ paddleController.rightCharacterPaddleAnimator?.SetTrigger("PaddleLeft"); paddleController.paddleState = PaddleController.EPaddleState.LEFT_PADDLE; paddleController.leftPaddleTimerInSeconds = 0; });
+        controls.RightPlayerRightPaddle.PointerDown.AddListener(() =>{ paddleController.rightCharacterPaddleAnimator?.SetTrigger("PaddleRight"); paddleController.paddleState = PaddleController.EPaddleState.RIGHT_PADDLE; paddleController.rightPaddleTimerInSeconds = 0; });
+        
+        #if USE_TAP_AND_HOLD
+        controls.LeftPlayerLeftPaddle.PointerUp.AddListener(() =>{ paddleController.leftPaddleActive = false; });
+        controls.LeftPlayerRightPaddle.PointerUp.AddListener(() =>{ paddleController.rightPaddleActive = false; });
+        controls.RightPlayerLeftPaddle.PointerUp.AddListener(() =>{ paddleController.leftPaddleActive = false; });
+        controls.RightPlayerRightPaddle.PointerUp.AddListener(() =>{ paddleController.rightPaddleActive = false; });
+        #endif
+    }
 
     #if UNITY_EDITOR
     void OnDrawGizmos() {                

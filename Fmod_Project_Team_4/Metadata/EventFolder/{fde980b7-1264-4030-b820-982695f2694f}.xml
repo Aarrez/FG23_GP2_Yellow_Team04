@@ -5,7 +5,7 @@
 			<value>Background noises</value>
 		</property>
 		<relationship name="folder">
-			<destination>{c98bd0bd-e70d-4d2a-b358-0d7192dc8290}</destination>
+			<destination>{4765d736-45b0-4f76-b99b-4343d3966bc7}</destination>
 		</relationship>
 	</object>
 </objects>

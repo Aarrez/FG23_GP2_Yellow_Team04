@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public enum ItemType
 {
@@ -9,11 +7,11 @@ public enum ItemType
     PlayerTexture
 }
 [CreateAssetMenu(menuName = "Inventory Item Data")]
+[Serializable]
 public class InventoryItemData : ScriptableObject
 {
     public string id;
     public string name;
     public ItemType type;
-    public Sprite icon;
     public Material material;
 }

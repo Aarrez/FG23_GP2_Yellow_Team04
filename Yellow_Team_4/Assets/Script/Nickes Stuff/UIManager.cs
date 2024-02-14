@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject leaderboardScreen;
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject customizationScreen;
+    [SerializeField] private GameObject playerCustomization;
+    [SerializeField] private GameObject kayakCustomization;
     [SerializeField] private GameObject storeScreen;
     [SerializeField] private GameObject levelScreen;
     [SerializeField] private GameObject readyScreen;
@@ -24,13 +27,20 @@ public class UIManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            GameManager.onGameStateChanged += GameManagerOnonGameStateChanged;            
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
-        GameManager.onGameStateChanged += GameManagerOnonGameStateChanged;
-        DontDestroyOnLoad(gameObject);
+    }
+
+    void Start() {
+        FindObjectOfType<MainMenu>().Initialize();
+        FindObjectOfType<Ready>().Initialize();
+        FindObjectOfType<InventoryMenu>().Initialize();
+        FindObjectOfType<FinishScreen>().Initialize();
     }
 
     private void OnDestroy()
@@ -54,6 +64,8 @@ public class UIManager : MonoBehaviour
         settingsScreen.SetActive(state == GameManager.gameState.settingsState);
         leaderboardScreen.SetActive(state == GameManager.gameState.leaderboardState);
         customizationScreen.SetActive(state == GameManager.gameState.customizationState);
+        playerCustomization.SetActive(state == GameManager.gameState.playerCustomizationState);
+        kayakCustomization.SetActive(state == GameManager.gameState.kayakCustomizationState);
         storeScreen.SetActive(state == GameManager.gameState.storeState);
         levelScreen.SetActive(state == GameManager.gameState.levelSelectionState);
         loadingScreen.SetActive(state == GameManager.gameState.loadingState);

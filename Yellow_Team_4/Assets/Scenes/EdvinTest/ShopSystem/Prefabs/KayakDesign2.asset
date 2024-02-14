@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Spider Kayak
   description: Does Whatever A Spider Can!
-  baseCost: 0
-  starsAmount: 0
+  baseCost: 30
+  starsAmount: 3
+  LinkedItemData: {fileID: 11400000, guid: 3da4ef6fad351fc4f901fe84d5e9632a, type: 2}

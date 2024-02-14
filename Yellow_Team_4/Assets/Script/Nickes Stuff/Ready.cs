@@ -10,8 +10,8 @@ public class Ready : MonoBehaviour
     private bool isReady;
     private int readyPlayers = 0;
     private int buttonsPressed;
-    [SerializeField] private GameObject[] disabledButtons = new GameObject[2];
-    private void Awake()
+    [SerializeField] private GameObject[] disabledButtons = new GameObject[6];
+    public void Initialize()
     {
         GameManager.onGameStateChanged += GameManagerOnonGameStateChanged;
     }

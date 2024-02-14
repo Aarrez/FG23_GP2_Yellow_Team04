@@ -8,9 +8,9 @@ public class OnEnableSettings : MonoBehaviour
     [SerializeField] private Slider masterSlider;
     private void OnEnable()
     {
-        var sv = UserDataManager.GetSavedVolume.Invoke();
-        sfxSlider.value = sv.Sfx;
-        masterSlider.value = sv.Master;
-        musicSlider.value = sv.Music;
+        // var sv = UserDataManager.GetSavedVolume.Invoke();
+        // sfxSlider.value = sv.Sfx;
+        // masterSlider.value = sv.Master;
+        // musicSlider.value = sv.Music;
     }
 }

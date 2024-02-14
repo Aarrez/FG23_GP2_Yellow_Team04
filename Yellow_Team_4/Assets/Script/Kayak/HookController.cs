@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum EHookState {
     NONE = 0,
@@ -16,7 +18,9 @@ public class HookController : MonoBehaviour, IKayakEntity
     [SerializeField] private float hookDistance = 1;
     [SerializeField] public float hookStrength = 2;
     [SerializeField] private float hookDisengageRadius = 0.5f;
-    [Range(0, 1)] [SerializeField] private float hookVeclocityOffsetMultipler = 0;  
+    [Range(0, 1)] [SerializeField] private float hookVeclocityOffsetMultipler = 0;
+    [SerializeField] private float hookAnimationTime = 0.2f;  
+    [SerializeField] private AnimationCurve hookTrajectory = AnimationCurve.Constant(0, 0, 0);
     [SerializeField] private EHookState currentState;
 
     // [SerializeField] float jointSpring = 10f;
@@ -35,13 +39,24 @@ public class HookController : MonoBehaviour, IKayakEntity
     private bool isRightDown;
     private bool isLeftDown;
 
+    private float currentHookAnimationTime;
+
     public void Initialize(Kayak entity)
     {
         this.kayak = entity;
         leftRenderer = transform.Find("LeftLineRenderer").GetComponent<LineRenderer>(); 
         rightRenderer = transform.Find("RightLineRenderer").GetComponent<LineRenderer>();
 
-        currentState = EHookState.NONE;               
+        currentState = EHookState.NONE; 
+
+        var v = new Vector3[10];
+        for(int i=0; i<v.Length; i++) {
+            v[i] = transform.position;
+        }
+        leftRenderer.positionCount = 10;
+        rightRenderer.positionCount = 10;
+        leftRenderer.SetPositions(v);
+        rightRenderer.SetPositions(v);              
     }
 
     public void OnFixedUpdate(float dt)
@@ -73,9 +88,10 @@ public class HookController : MonoBehaviour, IKayakEntity
     }
 
     public void OnUpdate(float dt)
-    {            
-        rightRenderer.SetPosition(index: 0, transform.position);
-        leftRenderer.SetPosition(index: 0, transform.position); 
+    {
+        CalculateHookAnimation(currentHookAnimationTime, hookAnimationTime, transform.position, mainHookPoint);            
+        // rightRenderer.SetPosition(index: 0, transform.position);
+        // leftRenderer.SetPosition(index: 0, transform.position); 
         
         if (Input.GetKeyDown(KeyCode.I)) {
             OnRightHookDown();
@@ -111,7 +127,9 @@ public class HookController : MonoBehaviour, IKayakEntity
                 OnLeftHookUp();
             }            
         }                
-        #endif        
+        #endif
+
+        currentHookAnimationTime = Mathf.Clamp(currentHookAnimationTime + dt, 0, 1);        
     }
 
     public void OnRightHookDown() {
@@ -122,7 +140,8 @@ public class HookController : MonoBehaviour, IKayakEntity
         if (isRightHit) {
             rightRenderer.enabled = true;
             rightHookPoint = rightHit.point;
-            rightRenderer.SetPosition(index: 1, rightHit.point);
+            CalculateHookAnimation(currentHookAnimationTime, hookAnimationTime, transform.position, rightHit.point);
+            // rightRenderer.SetPosition(index: 1, rightHit.point);
             currentState |= EHookState.RIGHTHOOK;            
         }
         #else
@@ -141,9 +160,11 @@ public class HookController : MonoBehaviour, IKayakEntity
             currentState |= EHookState.RIGHTHOOK;
 
             if (currentState.HasFlag(EHookState.LEFTHOOK) && currentState.HasFlag(EHookState.RIGHTHOOK)) {
+                currentHookAnimationTime = 0;
                 if (leftRenderer.enabled) leftRenderer.enabled = false;
                 rightRenderer.enabled = true;
-                rightRenderer.SetPosition(index: 1, rightHit.point);
+                // rightRenderer.SetPosition(index: 1, rightHit.point);
+                CalculateHookAnimation(currentHookAnimationTime, hookAnimationTime, transform.position, rightHit.point);
                 mainHookPoint = rightHookPoint;
             } 
         }
@@ -158,7 +179,8 @@ public class HookController : MonoBehaviour, IKayakEntity
         if (isLeftHit) {
             leftRenderer.enabled = true;
             leftHookPoint = leftHit.point;
-            leftRenderer.SetPosition(index: 1, leftHit.point);
+            // leftRenderer.SetPosition(index: 1, leftHit.point);
+            CalculateHookAnimation(currentHookAnimationTime, hookAnimationTime, transform.position, leftHit.point);
             currentState |= EHookState.LEFTHOOK;
         }
         #else
@@ -176,9 +198,11 @@ public class HookController : MonoBehaviour, IKayakEntity
             currentState |= EHookState.LEFTHOOK;
 
             if (currentState.HasFlag(EHookState.LEFTHOOK) && currentState.HasFlag(EHookState.RIGHTHOOK)) {
+                currentHookAnimationTime = 0;
                 if (rightRenderer.enabled) rightRenderer.enabled = false;
                 leftRenderer.enabled = true;
-                leftRenderer.SetPosition(index: 1, leftHit.point);
+                // leftRenderer.SetPosition(index: 1, leftHit.point);
+                CalculateHookAnimation(currentHookAnimationTime, hookAnimationTime, transform.position, leftHit.point);
                 mainHookPoint = leftHookPoint;
             }
         }
@@ -229,6 +253,23 @@ public class HookController : MonoBehaviour, IKayakEntity
 
         return (finalTangentForce + hookOffset).normalized;
     }
+
+    public void CalculateHookAnimation(float currentTime, float finalTime, Vector3 initialPosition, Vector3 finalPosition) {
+        var normalizedTime = Mathf.InverseLerp(0, finalTime, currentTime);
+        var directionDiff = finalPosition - initialPosition;
+        float split = directionDiff.magnitude / 10;
+        for (int i=0; i<10; i++) {
+            var fPos = initialPosition + directionDiff.normalized * split * i;            
+            var lerpPos = Vector3Utility.InverseLerp(initialPosition, finalPosition, fPos);
+
+            var fCurvePos = hookTrajectory.Evaluate(lerpPos);
+            // var cUp = Vector3.Cross(directionDiff.normalized, transform.right);
+            var realFPos = Vector3.Lerp(fPos + (transform.right * fCurvePos), fPos, normalizedTime);
+
+            leftRenderer.SetPosition(i, Vector3.Lerp(initialPosition, realFPos, normalizedTime));
+            rightRenderer.SetPosition(i, Vector3.Lerp(initialPosition, realFPos, normalizedTime));            
+        }        
+    } 
 
     #if UNITY_EDITOR
     void OnDrawGizmos() {

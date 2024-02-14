@@ -66,5 +66,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f5178f0aa3d0f4b903b490b55a295e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 80
-  maxRiverStrength: 2
+  strength: 90
+  maxRiverStrength: 6

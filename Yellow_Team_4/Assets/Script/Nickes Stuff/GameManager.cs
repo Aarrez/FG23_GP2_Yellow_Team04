@@ -40,6 +40,10 @@ public class GameManager : MonoBehaviour
                 break;
             case gameState.customizationState:
                 break;
+            case gameState.playerCustomizationState:
+                break;
+            case gameState.kayakCustomizationState:
+                break;
             case gameState.storeState:
                 break;
             case gameState.levelSelectionState:
@@ -71,6 +75,8 @@ public class GameManager : MonoBehaviour
         settingsState,
         leaderboardState,
         customizationState,
+        playerCustomizationState,
+        kayakCustomizationState,
         storeState,
         levelSelectionState,
         loadingState,

@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: PlayerFG
   m_EditorClassIdentifier: 
   id: 3
-  name: FG Player
+  name: FutureGames Coat
   type: 1
-  icon: {fileID: 21300000, guid: 7300123a9cc47f142824337fd65fa0c2, type: 3}
   material: {fileID: 2100000, guid: d8052a1ca4d824b4f844447b535917e6, type: 2}
