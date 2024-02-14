@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aefa38c8a60f5d4394df739d83f9015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory:
-  - {fileID: 11400000, guid: f8cbbc88cbba5054fbec4d071c55e75c, type: 2}
-  - {fileID: 11400000, guid: 70dbc25b3a79d434794d1f83eaa4878d, type: 2}
+  kayakinventory: []
+  playerinventory: []
+  assetData: {fileID: 11400000, guid: a2918b09151eda54a92f6459cb190903, type: 2}
