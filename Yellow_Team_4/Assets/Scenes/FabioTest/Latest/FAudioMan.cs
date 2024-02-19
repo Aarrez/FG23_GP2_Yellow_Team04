@@ -29,7 +29,7 @@ public class FAudioMan : MonoBehaviour
     {
         if(instance != null)
         {
-            Debug.LogError("Found more than one audio managers");
+            Debug.Log("Found more than one audio managers, destroying duplicate...");
             Destroy(gameObject);
             return;
         }

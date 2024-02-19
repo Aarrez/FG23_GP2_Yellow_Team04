@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public gameState state;
-    public static event Action<gameState> onGameStateChanged; 
+    public static event Action<gameState> onGameStateChanged;
+    [SerializeField] private VideoPlayer loadingAnim;
     private void Awake()
     {
         if (instance == null)
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case gameState.mainmenuState:
+                Time.timeScale = 1;
                 break;
             case gameState.settingsState:
                 break;

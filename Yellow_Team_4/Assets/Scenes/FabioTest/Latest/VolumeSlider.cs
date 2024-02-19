@@ -56,16 +56,16 @@ public class VolumeSlider : MonoBehaviour
             case VolumeType.MASTER:
                 FAudioMan.instance.masterVolume = volumeSlider.value;
                 MainMenu.SetMasterVolume(volumeSlider.value);
-                volumeText.text = vs.ToString() + "%";
+                if (volumeText != null) volumeText.text = vs.ToString() + "%";
                 break;
             case VolumeType.MUSIC:
                 FAudioMan.instance.musicVolume = volumeSlider.value;
                 MainMenu.SetMusicVolume(volumeSlider.value);
-                volumeText.text = vs.ToString() + "%";
+                if (volumeText != null) volumeText.text = vs.ToString() + "%";
                 break;
             case VolumeType.AMBIENCE:
                 FAudioMan.instance.ambienceVolume = volumeSlider.value;
-                volumeText.text = vs.ToString() + "%";
+                if (volumeText != null) volumeText.text = vs.ToString() + "%";
                 break;
             case VolumeType.SFX:
                 FAudioMan.instance.SFXVolume = volumeSlider.value;

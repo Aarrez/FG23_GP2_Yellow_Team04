@@ -36,8 +36,8 @@ public class ShopManager : MonoBehaviour
         {
             shopPanelsGO[i].SetActive(true);
         }
-        coinUI.text = "Coins: " + coins.ToString();
-        starUI.text = "Stars: " + stars.ToString();
+        coinUI.text = coins.ToString();
+        starUI.text = stars.ToString();
         LoadPanels();
         CheckPurchaseable();
         DeactivateLockScreen();
@@ -119,6 +119,7 @@ public class ShopManager : MonoBehaviour
     {
         coins = mainmenu.totalcoins;
         stars = mainmenu.totalstars;
-        coinUI.text = "Coins: " + coins.ToString();
+        coinUI.text = coins.ToString();
+        starUI.text = stars.ToString();
     }
 }

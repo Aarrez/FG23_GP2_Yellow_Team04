@@ -6,28 +6,19 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Linq;
+using TMPro;
 
 public class LeaderBoardManager : MonoBehaviour
 {
+    [SerializeField] private Sprite[] trophySprites;
     public static Func<string> GetName;
-    public static UnityAction<LevelCompleteStats> LeaderboardLoaded;
-    
-    [SerializeField] private GameObject slot;
-    private LevelCompleteStats leaderBoardData;
-    private Button[] buttons;
-    private Button send, read, clear;
-    private Toggle completedLevel;
-    private string playerName;
-    private int activeBuildIndex;
-    
-    private void Awake()
-    {
-        activeBuildIndex = SceneManager.GetActiveScene().buildIndex;
-    }
+    public static UnityAction<LevelCompleteStats> LeaderboardLoaded;    
+    private int activeBuildIndex = 1;
     
     private void OnEnable()
     {
-        ReadLeaderBoard();
+        ReadLeaderBoard(activeBuildIndex);
     }
 #if UNITY_EDITOR
     private void Update()
@@ -35,7 +26,7 @@ public class LeaderBoardManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             AddDefaultData();
-            ReadLeaderBoard();
+            ReadLeaderBoard(activeBuildIndex);
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -44,35 +35,39 @@ public class LeaderBoardManager : MonoBehaviour
     }
 #endif
     
-    private void ReadLeaderBoard()
+    public void ReadLeaderBoard(int level)
     {
-        List<LevelCompleteStats> dataset;
-        try
-        {
-            dataset =
-                UserDataManager.upd.GetUserData().LevelData[activeBuildIndex];
-        }
-        catch (Exception e)
-        {
-            UserDataManager.InstatiateUpd();
-            dataset =
-                UserDataManager.upd.GetUserData().LevelData[1];
-        }
-       
-        LeaderboardLoaded?.Invoke(dataset[0]);
-        playerName = GetName?.Invoke();
-        var childComp = transform.GetComponentsInChildren<TMPro.TMP_Text>();
-        for (int i = 0; i < childComp.Length; i++)
-        {
-            if (i >= dataset.Count)
-            {
-                childComp[i].text = "";
-                continue;
+        if (UserDataManager.upd != null) {
+            var levelStats = UserDataManager.upd.GetUserData().LevelData[level];
+            var orderedLevelStats = levelStats.OrderByDescending(x=> x.Starts).OrderBy( x=> x.Time ).ToList();
+            var idx = 0;
+            for(int i=0; i<transform.childCount; i++) {
+                if (i < orderedLevelStats.Count()) {
+                    var ol = orderedLevelStats[i];
+                    var orls = transform.GetChild(i);
+                    orls.gameObject.SetActive(true);                    
+                    var im = orls.transform.Find("Image").GetComponent<Image>();
+                    if (idx < 3) {
+                        im.enabled = true;
+                        im.sprite = trophySprites[idx];
+                        im.preserveAspect = true;
+                    } else {
+                        im.enabled = false;
+                    }
+                    orls.transform.Find("Image/Rank").GetComponent<TextMeshProUGUI>().text = (idx + 1).ToString();                    
+                    orls.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = UserDataManager.upd.GetUserData().userName + (idx + 1).ToString();
+                    var hst = TimeSpan.FromSeconds(ol.Time);
+                    orls.transform.Find("Time").GetComponent<TextMeshProUGUI>().text = string.Format("{0:D2}:{1:D2}:{2:D2}", 
+                    hst.Hours, 
+                    hst.Minutes, 
+                    hst.Seconds);
+                    idx++;                                                                                                  
+                }
+                else {
+                    transform.GetChild(i).gameObject.SetActive(false);
+                }
             }
-                
-            string text = $"{playerName}, Stars: {((int)dataset[i].Starts).ToString()}, Time: {dataset[i].Time.ToString()}";
-            childComp[i].text = text;
-        }
+        }               
     }
 
     private void AddDefaultData()
@@ -83,8 +78,10 @@ public class LeaderBoardManager : MonoBehaviour
     private void RemoveDefaults()
     {
         var d = UserDataManager.upd.GetUserData();
+        
         foreach (var levelScore in d.LevelData)
         {
+            if (levelScore.Value.Count <= 1) continue;
             for (int i = 0; i < levelScore.Value.Count; i++)
             {
                 if (levelScore.Value[i].Time <= 1)
@@ -93,8 +90,6 @@ public class LeaderBoardManager : MonoBehaviour
                 }
             }
         }
-            
-        
         UserDataManager.upd.SaveData(d);
                     
     }

@@ -24,8 +24,8 @@ public class MainMenu : MonoBehaviour
 
    public void StartGame(int index)
    {
-      SceneManager.LoadScene(index);
       GameManager.instance.UpdateGameState(GameManager.gameState.loadingState);
+      SceneManager.LoadSceneAsync(index);
       SceneManager.sceneLoaded += ReadyUp;
    }
 
@@ -110,30 +110,30 @@ public class MainMenu : MonoBehaviour
    {
       // AudioManager.instance.masterMixer.SetFloat("SFX", Mathf.Log10(volume)*20);
       FAudioMan.instance.SFXVolume = volume;      
-      soundVolume.Sfx = 1 -volume; // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
+      soundVolume.Sfx = volume;
       UserDataManager.SetSavedVolume.Invoke(soundVolume);
    }
    public static void SetMasterVolume(float volume)
    {
       // AudioManager.instance.masterMixer.SetFloat("master", Mathf.Log10(volume)*20);
       FAudioMan.instance.masterVolume = volume;
-      soundVolume.Master = 1- volume; // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
+      soundVolume.Master = volume;
       UserDataManager.SetSavedVolume.Invoke(soundVolume);
    }
    public static void SetMusicVolume(float volume)
    {
       // AudioManager.instance.masterMixer.SetFloat("music", Mathf.Log10(volume)*20);
       FAudioMan.instance.musicVolume = volume;
-      soundVolume.Music = 1-volume; // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
+      soundVolume.Music = volume;
       UserDataManager.SetSavedVolume.Invoke(soundVolume);
    }
 
    private void Start()
    {
       soundVolume = UserDataManager.GetSavedVolume.Invoke();
-      SetSFXVolume(1-soundVolume.Sfx); // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
-      SetMusicVolume(1-soundVolume.Music); // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
-      SetMasterVolume(1-soundVolume.Master); // HACK: we invert because setting the default persistent data to 1 is breaks a lot of code structure and we are running out of time
+      SetSFXVolume(soundVolume.Sfx); 
+      SetMusicVolume(soundVolume.Music);
+      SetMasterVolume(soundVolume.Master);
    }
 
    private void Update()
